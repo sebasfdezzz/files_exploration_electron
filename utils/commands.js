@@ -1,6 +1,5 @@
 const { exec } = require('child_process');
 
-// Function to execute terminal command and return result as a Promise
 function executeCommand(command) {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
@@ -17,7 +16,6 @@ function executeCommand(command) {
   });
 }
 
-// Function to get system architecture
 async function getArchitecture() {
   try {
     const architecture = await executeCommand('uname -m');
@@ -28,7 +26,6 @@ async function getArchitecture() {
   }
 }
 
-// Function to get disk space information
 async function getDiskSpace() {
   try {
     const diskSpace = await executeCommand('df -h');
@@ -39,7 +36,6 @@ async function getDiskSpace() {
   }
 }
 
-// Function to get total RAM
 async function getTotalRAM() {
   try {
     const totalRAM = await executeCommand('free -h | grep "Mem:" | awk \'{ print $2 }\'');
@@ -50,7 +46,6 @@ async function getTotalRAM() {
   }
 }
 
-// Function to get system model
 async function getSystemModel() {
   try {
     const systemModel = await executeCommand('sudo dmidecode -s system-product-name');
@@ -61,7 +56,6 @@ async function getSystemModel() {
   }
 }
 
-// Function to get system owner
 async function getSystemOwner() {
   try {
     const systemOwner = await executeCommand('whoami');
