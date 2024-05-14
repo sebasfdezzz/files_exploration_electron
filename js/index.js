@@ -1,3 +1,5 @@
+const { ipcRenderer } = require('electron');
+
 document.addEventListener("DOMContentLoaded", function() {
     var exploreBtn = document.getElementById("explore");
     var recoverBtn = document.getElementById("recover");
@@ -5,18 +7,19 @@ document.addEventListener("DOMContentLoaded", function() {
     var settingsBtn = document.getElementById("settings");
 
     exploreBtn.addEventListener("click", function() {
-        window.location.href = "templates/explore.html";
+        ipcRenderer.send('navigate', 'explore.html');
     });
 
     recoverBtn.addEventListener("click", function() {
-        window.location.href = "templates/recover.html";
+        ipcRenderer.send('navigate', 'recover.html');
     });
 
     systemBtn.addEventListener("click", function() {
-        window.location.href = "templates/system.html";
+        ipcRenderer.send('navigate', 'system.html');
     });
 
     settingsBtn.addEventListener("click", function() {
-        window.location.href = "templates/settings.html";
+        ipcRenderer.send('navigate', 'settings.html');
     });
 });
+

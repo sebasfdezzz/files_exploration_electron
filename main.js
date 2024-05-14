@@ -9,10 +9,22 @@ const createWindow = () => {
     win.loadFile('./template/index.html')
 }
 
-app.whenReady().then(() => {
-    createWindow()
-  })
+app.on('ready', () => {
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit()
-  })
+  if (process.platform !== 'darwin') {
+      app.quit();
+  }
+});
+
+app.on('activate', () => {
+  if (mainWindow === null) {
+      createWindow();
+  }
+});
+
+ipcMain.on('navigate', (event, page) => {
+  mainWindow.loadFile(path.join(__dirname, 'templates', page));
+});
