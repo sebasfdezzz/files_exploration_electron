@@ -56,10 +56,39 @@ document.addEventListener('DOMContentLoaded', async function() {
                         loadDirectory(file.absolute_path);
                     } else {
                         console.log(file);
+                        openPopup(file);
                     }
                 }
             });
         });
+
+        const openPopup = (file) => {
+            const popupWindow = window.open('../template/file_viewer.html', 'File Viewer', 'width=800,height=600');
+            if (!popupWindow) {
+                alert('Popup blocked! Please allow popups for this site.');
+                return;
+            }
+    
+            popupWindow.addEventListener('load', () => {
+                const fileImage = popupWindow.document.getElementById('file-image');
+                const fileText = popupWindow.document.getElementById('file-text');
+    
+                if (file.is_directory) {
+                    fileText.textContent = 'This is a directory.';
+                } else {
+                    const fileExtension = file.file_name.split('.').pop().toLowerCase();
+                    if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png' || fileExtension === 'gif') {
+                        fileImage.style.display = 'block';
+                        fileImage.src = file.absolute_path;
+                        fileText.style.display = 'none';
+                    } else {
+                        fileImage.style.display = 'none';
+                        fileText.style.display = 'block';
+                        fileText.textContent = 'File type not supported for preview.';
+                    }
+                }
+            });
+        };
     };
 
     const loadDirectory = async (directory) => {
