@@ -12,9 +12,22 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     let currentDirectory = '/'; // Start from the root directory or set an initial path
     let directoryHistory = [];
+    let selectionMode = false;
+    let selectedItems = [];
 
     const renderBreadcrumb = (path) => {
         breadcrumbDiv.textContent = path;
+    };
+
+    const toggleSelection = (fileItem, file) => {
+        const index = selectedItems.findIndex(item => item.absolute_path === file.absolute_path);
+        if (index === -1) {
+            selectedItems.push(file);
+            fileItem.classList.add('selected');
+        } else {
+            selectedItems.splice(index, 1);
+            fileItem.classList.remove('selected');
+        }
     };
 
     const renderFiles = (files) => {
@@ -35,11 +48,15 @@ document.addEventListener('DOMContentLoaded', async function() {
             fileListDiv.appendChild(fileItem);
 
             fileItem.addEventListener('click', () => {
-                if (file.is_directory) {
-                    directoryHistory.push(currentDirectory);
-                    loadDirectory(file.absolute_path);
+                if (selectionMode) {
+                    toggleSelection(fileItem, file);
                 } else {
-                    console.log(file);
+                    if (file.is_directory) {
+                        directoryHistory.push(currentDirectory);
+                        loadDirectory(file.absolute_path);
+                    } else {
+                        console.log(file);
+                    }
                 }
             });
         });
@@ -72,7 +89,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     selectModeButton.addEventListener('click', () => {
-        // Future implementation for selecting files
+        selectionMode = !selectionMode;
+        selectModeButton.textContent = selectionMode ? 'CANCEL SELECT' : 'SELECT';
+        if (!selectionMode) {
+            selectedItems = [];
+            document.querySelectorAll('.file-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+        }
     });
 
     fileOptionsButton.addEventListener('click', () => {
