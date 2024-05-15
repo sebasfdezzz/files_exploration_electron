@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const selectModeButton = document.getElementById('select-mode');
     const fileOptionsButton = document.getElementById('file-options');
 
-    let currentDirectory = '/'; // Start from the root directory or set an initial path
+    let currentDirectory = '/';
     let directoryHistory = [];
     let selectionMode = false;
     let selectedItems = [];
@@ -114,7 +114,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     addFileButton.addEventListener('click', () => {
-        // Future implementation for adding files
+        // Future implementation for adding files TODO
+        // con touch crear archivo y con cat poder escribir
     });
 
     selectModeButton.addEventListener('click', () => {
@@ -129,7 +130,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     fileOptionsButton.addEventListener('click', () => {
-        // Future implementation for file options
+        // Future implementation for file options TODO
+        // poder exportar a usb o drive
     });
 
     // Initial load
