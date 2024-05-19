@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const selectModeButton = document.getElementById('select-mode');
     const fileOptionsButton = document.getElementById('file-options');
     //ipcRenderer.send('log', '1');
-    let currentDirectory = '/home/sebastianf/Downloads';
+    let currentDirectory = '/';
     let directoryHistory = [];
     let selectionMode = false;
     let selectedItems = [];
@@ -88,15 +88,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                     } else {
                         fileImage.style.display = 'none';
                         fileText.style.display = 'block';
-                        ipcRenderer.send('log', 'b4');
                         try {
                             fileText.textContent = await fs.readFile(file.absolute_path, 'utf8');
                         } catch (error) {
                             ipcRenderer.send('log', error);
                             fileText.textContent = error;
                         }
-                        ipcRenderer.send('log', fileText.textContent);
-
                     }
                 }
             });
@@ -147,10 +144,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
     //ipcRenderer.send('log', '10');
     fileOptionsButton.addEventListener('click', async () => {
-        ipcRenderer.send('log', 'file options clicked');
-        const destinationDir = path.join(require('os').homedir(), 'Documents', 'copied_files');
+        ipcRenderer.send('log', 'file download clicked');
+        const destinationDir = path.join(require('os').homedir(), 'Downloads', 'copied_files');
         try {
+            
             await fs.mkdir(destinationDir, { recursive: true });
+            
             for (const item of selectedItems) {
                 const destinationPath = path.join(destinationDir, path.basename(item.absolute_path));
                 await fs.copyFile(item.absolute_path, destinationPath);
