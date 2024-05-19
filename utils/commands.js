@@ -24,6 +24,18 @@ function executeCommand(command) {
   });
 }
 
+async function createFileWithContent(fileName, content) {
+  try {
+    // Escape double quotes in content for command line
+    const escapedContent = content.replace(/"/g, '\\"');
+    const command = `echo "${escapedContent}" > "${fileName}"`;
+    await executeCommand(command);
+    ipcRenderer.send('log', `File ${fileName} created successfully.`);
+  } catch (error) {
+    ipcRenderer.send('log', `Failed to create file ${fileName}: ${error}`);
+  }
+}
+
 function parseSize(sizeStr) {
   // Convert size string with units to bytes
   const sizeUnits = {
@@ -129,25 +141,31 @@ async function getFileInfo(filePath) {
         is_executable: isExecutable
       };
     } catch (error) {
-      throw new Error(`Error getting file info: ${error.message}`);
+      //ipcRenderer.send('log', error.message);
+      return undefined      
     }
   }
   
   async function execute_ls(directory) {
     try {
       const files = await executeCommand(`ls -A1 "${directory}"`);
-      const fileList = files.split('\n');
-  
+      //ipcRenderer.send('log', files);
+      const fileList = files.split(' ');
+      //ipcRenderer.send('log', fileList);
       const fileInfos = await Promise.all(fileList.map(async (file) => {
         const filePath = path.join(directory, file);
         return getFileInfo(filePath);
       }));
-  
-      return fileInfos;
+      ipcRenderer.send('log', fileInfos);
+      
+      // Filter out any files that returned undefined (indicating an error)
+      const filteredFileInfos = fileInfos.filter(fileInfo => fileInfo !== undefined);
+
+      return filteredFileInfos;
     } catch (error) {
       console.error(`Error: ${error.message}`);
       return [];
     }
   }
 
-module.exports = { getSystemInfo, execute_ls };
+module.exports = { getSystemInfo, execute_ls,createFileWithContent };

@@ -1,5 +1,7 @@
 const { ipcRenderer } = require('electron');
-const { execute_ls } = require('../utils/commands.js');
+const { execute_ls, createFileWithContent } = require('../utils/commands.js');
+const path = require('path');
+const fs = require('fs').promises;
 
 document.addEventListener('DOMContentLoaded', async function() {
     const fileListDiv = document.getElementById('file-list');
@@ -9,16 +11,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     const addFileButton = document.getElementById('add-file');
     const selectModeButton = document.getElementById('select-mode');
     const fileOptionsButton = document.getElementById('file-options');
-    ipcRenderer.send('log', '1');
-    let currentDirectory = '/';
+    //ipcRenderer.send('log', '1');
+    let currentDirectory = '/home/sebastianf/Downloads';
     let directoryHistory = [];
     let selectionMode = false;
     let selectedItems = [];
-    ipcRenderer.send('log', '2');
+    //ipcRenderer.send('log', '2');
     const renderBreadcrumb = (path) => {
         breadcrumbDiv.textContent = path;
+        //ipcRenderer.send('log', '19');
     };
-    ipcRenderer.send('log', '3');
+    //ipcRenderer.send('log', '3');
     const toggleSelection = (fileItem, file) => {
         const index = selectedItems.findIndex(item => item.absolute_path === file.absolute_path);
         if (index === -1) {
@@ -29,8 +32,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             fileItem.classList.remove('selected');
         }
     };
-    ipcRenderer.send('log', '4');
+    //ipcRenderer.send('log', '4');
     const renderFiles = (files) => {
+        //ipcRenderer.send('log', '20');
         fileListDiv.innerHTML = '';
         files.forEach(file => {
             const fileItem = document.createElement('div');
@@ -69,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 return;
             }
     
-            popupWindow.addEventListener('load', () => {
+            popupWindow.addEventListener('load', async () => {
                 const fileImage = popupWindow.document.getElementById('file-image');
                 const fileText = popupWindow.document.getElementById('file-text');
     
@@ -84,52 +88,66 @@ document.addEventListener('DOMContentLoaded', async function() {
                     } else {
                         fileImage.style.display = 'none';
                         fileText.style.display = 'block';
-                        fileText.textContent = 'File type not supported for preview.';
+                        ipcRenderer.send('log', 'b4');
+                        try {
+                            fileText.textContent = await fs.readFile(file.absolute_path, 'utf8');
+                        } catch (error) {
+                            ipcRenderer.send('log', error);
+                            fileText.textContent = error;
+                        }
+                        ipcRenderer.send('log', fileText.textContent);
+
                     }
                 }
             });
         };
+        //ipcRenderer.send('log', '21');
     };
-    ipcRenderer.send('log', '5');
-    ipcRenderer.send('log', '6');
+    //ipcRenderer.send('log', '5');
+    //ipcRenderer.send('log', '6');
     const loadDirectory = async (directory) => {
-        ipcRenderer.send('log', '14');
+        //ipcRenderer.send('log', '14');
         try {
             currentDirectory = directory;
-            ipcRenderer.send('log', '15');
+            //ipcRenderer.send('log', '15');
             renderBreadcrumb(currentDirectory);
-            ipcRenderer.send('log', '16');
+            //ipcRenderer.send('log', '16');
+            ipcRenderer.send('log', directory);
             const files = await execute_ls(directory);
-            ipcRenderer.send('log', '17');
+            
+            //ipcRenderer.send('log', files);
+            //ipcRenderer.send('log', '17');
             renderFiles(files);
-            ipcRenderer.send('log', '18');
+            //ipcRenderer.send('log', '18');
         } catch (error) {
             console.error(`Error loading directory: ${error.message}`);
         }
     };
-    ipcRenderer.send('log', '7');
+    //ipcRenderer.send('log', '7');
     backToIndexButton.addEventListener('click', () => {
         ipcRenderer.send('navigate', 'index.html');
     });
-    ipcRenderer.send('log', '8');
+    //ipcRenderer.send('log', '8');
     backToPrevButton.addEventListener('click', () => {
         if (directoryHistory.length > 0) {
             const prevDirectory = directoryHistory.pop();
             loadDirectory(prevDirectory);
         }
     });
-    ipcRenderer.send('log', '9');
+    //ipcRenderer.send('log', '9');
     addFileButton.addEventListener('click', async () => {
-        const newFilePath = path.join(currentDirectory, 'test.txt');
+        ipcRenderer.send('log', 'add file clicked');
         try {
-            await fs.writeFile(newFilePath, 'This is a test.');
+            const newFilePath = path.join(currentDirectory, 'test.txt');
+            await createFileWithContent(newFilePath, 'this is a test');
             loadDirectory(currentDirectory); // Refresh the directory view
         } catch (error) {
-            console.error(`Error creating file: ${error.message}`);
+            ipcRenderer.send('log', error.message);
         }
     });
-    ipcRenderer.send('log', '10');
+    //ipcRenderer.send('log', '10');
     fileOptionsButton.addEventListener('click', async () => {
+        ipcRenderer.send('log', 'file options clicked');
         const destinationDir = path.join(require('os').homedir(), 'Documents', 'copied_files');
         try {
             await fs.mkdir(destinationDir, { recursive: true });
@@ -141,12 +159,12 @@ document.addEventListener('DOMContentLoaded', async function() {
             document.querySelectorAll('.file-item').forEach(item => item.classList.remove('selected'));
             selectionMode = false;
             selectModeButton.textContent = 'SELECT';
-            alert('Files copied successfully!');
+            ipcRenderer.send('log', 'copied file');
         } catch (error) {
-            console.error(`Error copying files: ${error.message}`);
+            ipcRenderer.send('log', error.message);
         }
     });
-    ipcRenderer.send('log', '11');
+    //ipcRenderer.send('log', '11');
     selectModeButton.addEventListener('click', () => {
         selectionMode = !selectionMode;
         selectModeButton.textContent = selectionMode ? 'CANCEL SELECT' : 'SELECT';
@@ -157,8 +175,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
         }
     });
-    ipcRenderer.send('log', '12');
+    //ipcRenderer.send('log', '12');
     // Initial load
     loadDirectory(currentDirectory);
-    ipcRenderer.send('log', '13');
+    //ipcRenderer.send('log', '13');
 });
