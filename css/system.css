@@ -62,3 +62,33 @@ h1 {
 .button:hover {
     background-color: #395672;
 }
+
+/* CSS for the disk list */
+.disks-list {
+    margin-top: 10px; /* Adjust as needed */
+}
+
+/* CSS for each disk item */
+.disk-item {
+    margin-bottom: 5px; /* Adjust as needed */
+}
+
+/* CSS for the disk name */
+.disk-item span:first-child {
+    margin-right: 10px; /* Adjust as needed */
+}
+
+/* CSS for the disk usage list */
+.disk-usage-list {
+    margin-top: 10px; /* Adjust as needed */
+}
+
+/* CSS for each disk usage item */
+.disk-usage-item {
+    margin-bottom: 5px; /* Adjust as needed */
+}
+
+/* CSS for spans inside the disk usage item */
+.disk-usage-item span {
+    margin-right: 10px; /* Adjust as needed */
+}

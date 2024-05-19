@@ -16,17 +16,69 @@ function executeCommand(command) {
         console.log(stderr);
         return;
       }
-      resolve(stdout.trim());
+
+      // Remove newline characters and extra whitespace
+      const cleanedOutput = stdout.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+      resolve(cleanedOutput);
     });
   });
 }
 
+function parseSize(sizeStr) {
+  // Convert size string with units to bytes
+  const sizeUnits = {
+      'K': 1024,
+      'M': 1024 ** 2,
+      'G': 1024 ** 3,
+      'T': 1024 ** 4
+  };
+  const unit = sizeStr.slice(-1);
+  const size = parseFloat(sizeStr);
+  if (sizeUnits[unit]) {
+      return size * sizeUnits[unit];
+  } else {
+      return size;
+  }
+}
+
+function cleanBlockDevices(jsonStr) {
+  // Remove the slashes from the input JSON string
+  const cleanedJsonStr = jsonStr.replace(/\\/g, '');
+
+  // Parse the JSON string into an object
+  const data = JSON.parse(cleanedJsonStr);
+
+  // Clean and process the block device information
+  const cleanedDevices = data.blockdevices.map(device => ({
+      kname: device.kname,
+      sizeBytes: device.size
+  }));
+
+  return cleanedDevices;
+}
+
+function cleanFilesystemInfo(inputStr) {
+  const entries = inputStr.trim().split(/\s+/); // Split input string by whitespace
+
+  const cleanedData = [];
+  for (let i = 0; i < entries.length; i += 3) {
+      const filesystem = entries[i].startsWith('/dev/') ? entries[i].slice(5) : entries[i];
+      const size = entries[i + 1];
+      const usePercentage = entries[i + 2];
+      cleanedData.push({ filesystem, size, usePercentage });
+  }
+
+  return cleanedData;
+}
+
 async function getSystemInfo() {
   try {
-    const disks = await executeCommand('lsblk -o NAME,SIZE,TYPE,MOUNTPOINT');
-    const diskUsage = await executeCommand('df -h');
-    const ram = await executeCommand('free -h');
-    const systemInfo = await executeCommand('sudo dmidecode -t system');
+    const disks = await executeCommand('lsblk -n -o KNAME,SIZE -J');
+    const cleanedDisks = cleanBlockDevices(disks);
+    const diskUsage = await executeCommand('df -h --output=source,size,pcent | grep -v -e loop -e tmp -efi');
+    const cleanedDiskUsage = cleanFilesystemInfo(diskUsage);
+    // const ram = await executeCommand('free -h');
+    // const systemInfo = await executeCommand('sudo dmidecode -t system');
 
     const systemData = {
       architecture: os.arch(),
@@ -36,11 +88,25 @@ async function getSystemInfo() {
       totalMemory: os.totalmem(),
       freeMemory: os.freemem(),
       cpus: os.cpus(),
-      disks: disks,
-      diskUsage: diskUsage,
-      ram: ram,
-      systemInfo: systemInfo
+      disks: cleanedDisks,
+      diskUsage: cleanedDiskUsage,
+      // ram: ram
+      //systemInfo: systemInfo
     };
+
+    // const systemData = {
+    //   architecture: "yo",
+    //   hostname: "yo",
+    //   platform: "yo",
+    //   release: "yo",
+    //   totalMemory: "yo",
+    //   freeMemory: "yo",
+    //   cpus:"yo",
+    //   disks: "yo",
+    //   diskUsage: "yo",
+    //   ram: "yo",
+    //   systemInfo: "yo"
+    // };
 
     return systemData
   } catch (error) {

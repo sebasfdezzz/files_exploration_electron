@@ -1,10 +1,12 @@
 const { ipcRenderer } = require('electron');
 const { getSystemInfo } = require('../utils/commands.js');
 
-document.addEventListener('DOMContentLoaded', function() {
-    const systemData = getSystemInfo();
-    const systemInfoDiv = document.getElementById('system-info');
+document.addEventListener('DOMContentLoaded', async function() {
+    let systemData = await getSystemInfo();
     
+    ipcRenderer.send('log', JSON.stringify(systemData));
+    const systemInfoDiv = document.getElementById('system-info');
+    ipcRenderer.send('log', '1');
     const createSystemItem = (title, value) => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'system-item';
@@ -20,25 +22,70 @@ document.addEventListener('DOMContentLoaded', function() {
         
         return itemDiv;
     };
-    
+
     systemInfoDiv.appendChild(createSystemItem('Architecture', systemData.architecture));
     systemInfoDiv.appendChild(createSystemItem('Hostname', systemData.hostname));
     systemInfoDiv.appendChild(createSystemItem('Platform', systemData.platform));
     systemInfoDiv.appendChild(createSystemItem('Release', systemData.release));
     systemInfoDiv.appendChild(createSystemItem('Total Memory', `${(systemData.totalMemory / (1024 ** 3)).toFixed(2)} GB`));
     systemInfoDiv.appendChild(createSystemItem('Free Memory', `${(systemData.freeMemory / (1024 ** 3)).toFixed(2)} GB`));
-    
+
     systemData.cpus.forEach((cpu, index) => {
         systemInfoDiv.appendChild(createSystemItem(`CPU ${index + 1}`, `${cpu.model} @ ${cpu.speed} MHz`));
     });
     
-    systemInfoDiv.appendChild(createSystemItem('Disks', JSON.stringify(systemData.disks, null, 2)));
-    systemInfoDiv.appendChild(createSystemItem('Disk Usage', JSON.stringify(systemData.diskUsage, null, 2)));
-    systemInfoDiv.appendChild(createSystemItem('RAM', JSON.stringify(systemData.ram, null, 2)));
-    systemInfoDiv.appendChild(createSystemItem('System Info', JSON.stringify(systemData.systemInfo, null, 2)));
+    // Create a formatted list of disks
+    const disksList = document.createElement('div');
+    disksList.className = 'disks-list';
+    systemData.disks.forEach((disk, index) => {
+        const diskDiv = document.createElement('div');
+        diskDiv.className = 'disk-item';
 
-    const backButton = document.getElementById('back-button');
-    backButton.addEventListener('click', function() {
+        const diskName = document.createElement('span');
+        diskName.textContent = `${disk.kname}:`;
+
+        const diskSize = document.createElement('span');
+        diskSize.textContent = disk.sizeBytes;
+
+        diskDiv.appendChild(diskName);
+        diskDiv.appendChild(diskSize);
+
+        disksList.appendChild(diskDiv);
+    });
+    systemInfoDiv.appendChild(createSystemItem('Disks', ''));
+    systemInfoDiv.appendChild(disksList);
+
+    // Create a formatted list of disk usage
+    const diskUsageList = document.createElement('div');
+    diskUsageList.className = 'disk-usage-list';
+    systemData.diskUsage.forEach((diskUsage, index) => {
+        diskUsageList.appendChild(createDiskUsageItem(diskUsage));
+    });
+    systemInfoDiv.appendChild(createSystemItem('Disk Usage', ''));
+    systemInfoDiv.appendChild(diskUsageList);
+
+    function createDiskUsageItem(diskUsage) {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'disk-usage-item';
+
+        const filesystem = document.createElement('span');
+        filesystem.textContent = diskUsage.filesystem;
+
+        const size = document.createElement('span');
+        size.textContent = diskUsage.size;
+
+        const usePercentage = document.createElement('span');
+        usePercentage.textContent = diskUsage.usePercentage;
+
+        itemDiv.appendChild(filesystem);
+        itemDiv.appendChild(size);
+        itemDiv.appendChild(usePercentage);
+
+        return itemDiv;
+    }
+
+    document.getElementById('back-button').addEventListener('click', () => {
         ipcRenderer.send('navigate', 'index.html');
     });
+    ipcRenderer.send('log', '9');
 });
