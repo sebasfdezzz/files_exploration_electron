@@ -74,7 +74,7 @@ select, input[type="text"] {
     background-color: #c0392b;
 }
 
-.recover-btn {
+.recover-btn, .back-button {
     width: 100%;
     margin-top: 10px;
 }

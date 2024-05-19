@@ -168,4 +168,4 @@ async function getFileInfo(filePath) {
     }
   }
 
-module.exports = { getSystemInfo, execute_ls,createFileWithContent };
+module.exports = { getSystemInfo, execute_ls,createFileWithContent,executeCommand };

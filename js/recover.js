@@ -1,9 +1,12 @@
 const { ipcRenderer, remote } = require('electron');
 const { exec } = require('child_process');
+const { executeCommand } = require('../utils/commands.js');
 const { spawn } = require('child_process');
 const path = require('path');
 const os = require('os');
 const fs = require('fs');
+
+const destination = 'Downloads/recovered_files/recovered_files'
 
 // Function to load disks using lsblk
 async function loadDisks() {
@@ -13,12 +16,11 @@ async function loadDisks() {
             return;
         }
         const disks = JSON.parse(stdout).blockdevices.filter(device => device.fstype);
-        disks.unshift({ kname: '/', fstype: 'root' }); // Add root directory
         const diskSelect = document.getElementById('disk-select');
         disks.forEach(disk => {
             const option = document.createElement('option');
             option.value = disk.kname;
-            option.textContent = disk.kname === '/' ? 'Root Directory' : `/dev/${disk.kname}`;
+            option.textContent = disk.kname === '/' ? 'Root Directory' : `${disk.kname}`;
             diskSelect.appendChild(option);
         });
     });
@@ -63,7 +65,6 @@ function runSudoCommand(command, password, callback) {
 // Function to handle file recovery
 async function recoverFiles() {
     const disk = document.getElementById('disk-select').value;
-    const destination = document.getElementById('destination-folder').value;
     const fileTypes = [];
 
     if (document.getElementById('documents-toggle').classList.contains('selected')) {
@@ -75,19 +76,18 @@ async function recoverFiles() {
     if (document.getElementById('images-toggle').classList.contains('selected')) {
         fileTypes.push('jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'svg');
     }
-    const fileTypesStr = fileTypes.length > 0 ? fileTypes.map(type => `${type},enable`).join(',') : 'everything,disable,jpg,enable,png,enable';
+    // if (document.getElementById('all-toggle').classList.contains('selected')) {
+    //     fileTypes = []
+    // }
+    const fileTypesStr = fileTypes.length > 0 ? 'everything,disable,'+fileTypes.map(type => `${type},enable`).join(',') : 'everything,enable';
 
-    const sudoCommand = `photorec /log /d ${destination} /cmd ${disk} fileopt,${fileTypesStr},search`;
+    const diskCommand = `/dev/${disk}`;
+    const sudoCommand = `photorec /log /d /home/sebastianf/${destination} /cmd ${diskCommand} fileopt,${fileTypesStr},search`;
     const fullCommand = `echo S1f2L3123sfl | sudo -S ${sudoCommand}`;
 
-    runSudoCommand(fullCommand, 'S1f2L3123sfl', (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error: ${error.message}`);
-            return;
-        }
-        console.log(stdout);
-        alert('Recovery process started. Check logs for details.');
-    });
+    ipcRenderer.send('log', fullCommand);
+
+    await executeCommand(fullCommand);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -106,15 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
-    document.getElementById('choose-destination').addEventListener('click', async () => {
-        const { canceled, filePaths } = await remote.dialog.showOpenDialog({
-            properties: ['openDirectory']
-        });
-        if (!canceled && filePaths.length > 0) {
-            document.getElementById('destination-folder').value = filePaths[0];
-        }
-    });
+    document.getElementById('destination-folder').value = destination; 
 
     document.getElementById('recover-button').addEventListener('click', recoverFiles);
 
