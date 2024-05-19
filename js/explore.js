@@ -113,9 +113,32 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     });
 
-    addFileButton.addEventListener('click', () => {
-        // Future implementation for adding files TODO
-        // con touch crear archivo y con cat poder escribir
+    addFileButton.addEventListener('click', async () => {
+        const newFilePath = path.join(currentDirectory, 'test.txt');
+        try {
+            await fs.writeFile(newFilePath, 'This is a test.');
+            loadDirectory(currentDirectory); // Refresh the directory view
+        } catch (error) {
+            console.error(`Error creating file: ${error.message}`);
+        }
+    });
+
+    fileOptionsButton.addEventListener('click', async () => {
+        const destinationDir = path.join(require('os').homedir(), 'Documents', 'copied_files');
+        try {
+            await fs.mkdir(destinationDir, { recursive: true });
+            for (const item of selectedItems) {
+                const destinationPath = path.join(destinationDir, path.basename(item.absolute_path));
+                await fs.copyFile(item.absolute_path, destinationPath);
+            }
+            selectedItems = [];
+            document.querySelectorAll('.file-item').forEach(item => item.classList.remove('selected'));
+            selectionMode = false;
+            selectModeButton.textContent = 'SELECT';
+            alert('Files copied successfully!');
+        } catch (error) {
+            console.error(`Error copying files: ${error.message}`);
+        }
     });
 
     selectModeButton.addEventListener('click', () => {
@@ -127,11 +150,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                 item.classList.remove('selected');
             });
         }
-    });
-
-    fileOptionsButton.addEventListener('click', () => {
-        // Future implementation for file options TODO
-        // poder exportar a usb o drive
     });
 
     // Initial load
