@@ -12,7 +12,7 @@ async function loadDisks() {
             return;
         }
         const disks = JSON.parse(stdout).blockdevices.filter(device => device.fstype);
-        disks.unshift({ kname: '/', fstype: 'root' }); // Add root directory
+        disks.unshift({ kname: '/', fstype: 'btrfs' }); // Add root directory
         const diskSelect = document.getElementById('disk-select');
         disks.forEach(disk => {
             const option = document.createElement('option');
@@ -30,14 +30,14 @@ async function recoverFiles() {
     const fileTypes = [];
 
     if (document.getElementById('documents-toggle').classList.contains('selected')) {
-        fileTypes.push('doc');
+        fileTypes.push('doc', 'docx', 'pdf', 'txt', 'xls', 'xlsx', 'ppt', 'pptx');
     }
     if (document.getElementById('videos-toggle').classList.contains('selected')) {
-        fileTypes.push('mp4');
+        fileTypes.push('mp4', 'avi', 'mkv', 'mov', 'wmv', 'flv', 'mpeg', 'mpg');
     }
     if (document.getElementById('images-toggle').classList.contains('selected')) {
-        fileTypes.push('jpg', 'png');
-    }
+        fileTypes.push('jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'svg');
+    }    
     const fileTypesStr = fileTypes.length > 0 ? fileTypes.map(type => `${type},enable`).join(',') : 'everything,disable,jpg,enable,png,enable';
 
     const command = `sudo photorec /log /d ${destination} /cmd ${disk} fileopt,${fileTypesStr},search`;
