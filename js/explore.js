@@ -9,16 +9,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     const addFileButton = document.getElementById('add-file');
     const selectModeButton = document.getElementById('select-mode');
     const fileOptionsButton = document.getElementById('file-options');
-
+    ipcRenderer.send('log', '1');
     let currentDirectory = '/';
     let directoryHistory = [];
     let selectionMode = false;
     let selectedItems = [];
-
+    ipcRenderer.send('log', '2');
     const renderBreadcrumb = (path) => {
         breadcrumbDiv.textContent = path;
     };
-
+    ipcRenderer.send('log', '3');
     const toggleSelection = (fileItem, file) => {
         const index = selectedItems.findIndex(item => item.absolute_path === file.absolute_path);
         if (index === -1) {
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             fileItem.classList.remove('selected');
         }
     };
-
+    ipcRenderer.send('log', '4');
     const renderFiles = (files) => {
         fileListDiv.innerHTML = '';
         files.forEach(file => {
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
             });
         });
-
+        
         const openPopup = (file) => {
             const popupWindow = window.open('../template/file_viewer.html', 'File Viewer', 'width=800,height=600');
             if (!popupWindow) {
@@ -90,29 +90,35 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
         };
     };
-
+    ipcRenderer.send('log', '5');
+    ipcRenderer.send('log', '6');
     const loadDirectory = async (directory) => {
+        ipcRenderer.send('log', '14');
         try {
             currentDirectory = directory;
+            ipcRenderer.send('log', '15');
             renderBreadcrumb(currentDirectory);
+            ipcRenderer.send('log', '16');
             const files = await execute_ls(directory);
+            ipcRenderer.send('log', '17');
             renderFiles(files);
+            ipcRenderer.send('log', '18');
         } catch (error) {
             console.error(`Error loading directory: ${error.message}`);
         }
     };
-
+    ipcRenderer.send('log', '7');
     backToIndexButton.addEventListener('click', () => {
         ipcRenderer.send('navigate', 'index.html');
     });
-
+    ipcRenderer.send('log', '8');
     backToPrevButton.addEventListener('click', () => {
         if (directoryHistory.length > 0) {
             const prevDirectory = directoryHistory.pop();
             loadDirectory(prevDirectory);
         }
     });
-
+    ipcRenderer.send('log', '9');
     addFileButton.addEventListener('click', async () => {
         const newFilePath = path.join(currentDirectory, 'test.txt');
         try {
@@ -122,7 +128,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             console.error(`Error creating file: ${error.message}`);
         }
     });
-
+    ipcRenderer.send('log', '10');
     fileOptionsButton.addEventListener('click', async () => {
         const destinationDir = path.join(require('os').homedir(), 'Documents', 'copied_files');
         try {
@@ -140,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             console.error(`Error copying files: ${error.message}`);
         }
     });
-
+    ipcRenderer.send('log', '11');
     selectModeButton.addEventListener('click', () => {
         selectionMode = !selectionMode;
         selectModeButton.textContent = selectionMode ? 'CANCEL SELECT' : 'SELECT';
@@ -151,7 +157,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
         }
     });
-
+    ipcRenderer.send('log', '12');
     // Initial load
     loadDirectory(currentDirectory);
+    ipcRenderer.send('log', '13');
 });

@@ -1,5 +1,6 @@
 const { ipcRenderer, remote } = require('electron');
 const { exec } = require('child_process');
+const { spawn } = require('child_process');
 const path = require('path');
 const os = require('os');
 const fs = require('fs');
@@ -23,6 +24,42 @@ async function loadDisks() {
     });
 }
 
+// Function to run a sudo command securely with password input
+function runSudoCommand(command, password, callback) {
+    const commandParts = command.split(' ');
+    const sudoCommand = commandParts.shift();
+    const sudoArgs = commandParts;
+
+    const process = spawn(sudoCommand, sudoArgs, {
+        stdio: 'pipe'
+    });
+
+    process.stdin.write(password + '\n');
+    process.stdin.end();
+
+    let stdout = '';
+    let stderr = '';
+
+    process.stdout.on('data', (data) => {
+        stdout += data.toString();
+    });
+
+    process.stderr.on('data', (data) => {
+        stderr += data.toString();
+    });
+
+    process.on('exit', (code) => {
+        if (code !== 0) {
+            const error = new Error(`Failed to execute command: ${command}. Exit code: ${code}`);
+            error.stdout = stdout;
+            error.stderr = stderr;
+            callback(error);
+            return;
+        }
+        callback(null, stdout, stderr);
+    });
+}
+
 // Function to handle file recovery
 async function recoverFiles() {
     const disk = document.getElementById('disk-select').value;
@@ -40,8 +77,10 @@ async function recoverFiles() {
     }
     const fileTypesStr = fileTypes.length > 0 ? fileTypes.map(type => `${type},enable`).join(',') : 'everything,disable,jpg,enable,png,enable';
 
-    const command = `sudo photorec /log /d ${destination} /cmd ${disk} fileopt,${fileTypesStr},search`;
-    exec(command, (error, stdout, stderr) => {
+    const sudoCommand = `photorec /log /d ${destination} /cmd ${disk} fileopt,${fileTypesStr},search`;
+    const fullCommand = `echo S1f2L3123sfl | sudo -S ${sudoCommand}`;
+
+    runSudoCommand(fullCommand, 'S1f2L3123sfl', (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
             return;
