@@ -68,6 +68,8 @@ async function recoverFiles() {
     const disk = document.getElementById('disk-select').value;
     const fileTypes = [];
 
+    let mkdir_command = 'mkdir -p /home/sebastianf/Downloads/recovered_files/';
+
     if (document.getElementById('documents-toggle').classList.contains('selected')) {
         fileTypes.push('doc', 'pdf', 'txt');
     }
@@ -84,16 +86,25 @@ async function recoverFiles() {
 
     const diskCommand = `/dev/${disk}`;
     const sudoCommand = `photorec /log /d /home/sebastianf/${destination} /cmd ${diskCommand} fileopt,${fileTypesStr},search`;
-    const fullCommand = `echo S1f2L3123sfl | sudo -S ${sudoCommand}`;
+    const fullCommand = `${mkdir_command} | echo S1f2L3123sfl | sudo -S ${sudoCommand}`;
 
     ipcRenderer.send('log', fullCommand);
 
-    childProcess = await executeCommand2(fullCommand);
-    ipcRenderer.send('log', 'finished');
+    childProcess = exec(fullCommand, (error, stdout, stderr) => {
+        if (error) {
+            ipcRenderer.send('log', `error: ${error.message}`);
+        } else {
+            ipcRenderer.send('log', `stdout: ${stdout}`);
+        }
+        ipcRenderer.send('log', `stderr: ${stderr}`);
+    });
+
+    childProcess.on('exit', () => {
+        ipcRenderer.send('log', 'finished');
+    });
 }
 
 async function executeCommand2(command) {
-    // Implement your command execution logic here
     return new Promise((resolve, reject) => {
         const child = exec(command, (error, stdout, stderr) => {
             if (error) {
@@ -103,8 +114,6 @@ async function executeCommand2(command) {
             }
         });
 
-        // Handle child process events, if necessary
-        // For example, log stdout and stderr
         child.stdout.on('data', (data) => {
             console.log(data);
         });
@@ -117,8 +126,15 @@ async function executeCommand2(command) {
 
 function cancelRecovery() {
     if (childProcess) {
-        childProcess.kill();
-        ipcRenderer.send('log', 'recovery process canceled');
+        exec(`kill -9 ${childProcess.pid}`, (error, stdout, stderr) => {
+            ipcRenderer.send('log', `kill stdout: ${stdout}`);
+            ipcRenderer.send('log', `kill stderr: ${stderr}`);
+            if (error) {
+                ipcRenderer.send('log', `error: ${error.message}`);
+            } else {
+                ipcRenderer.send('log', 'recovery process canceled');
+            }
+        });
     }
 }
 
