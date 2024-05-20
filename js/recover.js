@@ -66,6 +66,8 @@ async function recoverFiles() {
     childProcess.on('exit', () => {
         ipcRenderer.send('log', 'finished');
     });
+
+    alert(`Files recovered onto ${destination_folder_recover}`);
 }
 
 async function executeCommand2(command) {

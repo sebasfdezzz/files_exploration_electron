@@ -1,6 +1,6 @@
 const { ipcRenderer } = require('electron');
 const { execute_ls, createFileWithContent } = require('../utils/commands.js');
-const { destiantion_folder_copy } = require('../utils/global_values.js');
+const { destination_folder_copy } = require('../utils/global_values.js');
 const path = require('path');
 const fs = require('fs').promises;
 
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const selectModeButton = document.getElementById('select-mode');
     const fileOptionsButton = document.getElementById('file-options');
     //ipcRenderer.send('log', '1');
-    let currentDirectory = '/home/sebastianf/Downloads';
+    let currentDirectory = '/';
     let directoryHistory = [];
     let selectionMode = false;
     let selectedItems = [];
@@ -136,10 +136,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     addFileButton.addEventListener('click', async () => {
         ipcRenderer.send('log', 'add file clicked');
         try {
-            openEditPopup();
-            // const newFilePath = path.join(currentDirectory, 'test.txt');
-            // await createFileWithContent(newFilePath, 'this is a test');
-            //loadDirectory(currentDirectory); // Refresh the directory view
+            //openEditPopup();
+            const newFilePath = path.join(currentDirectory, 'test.txt');
+            await createFileWithContent(newFilePath, 'this is a test');
+            loadDirectory(currentDirectory); // Refresh the directory view
         } catch (error) {
             ipcRenderer.send('log', error.message);
         }
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     //ipcRenderer.send('log', '10');
     fileOptionsButton.addEventListener('click', async () => {
         ipcRenderer.send('log', 'file download clicked');
-        const destinationDir = destiantion_folder_copy;
+        const destinationDir = destination_folder_copy;
         try {
             
             await fs.mkdir(destinationDir, { recursive: true });
@@ -170,6 +170,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             selectionMode = false;
             selectModeButton.textContent = 'SELECT';
             ipcRenderer.send('log', 'copied file');
+            alert(`Files copied onto ${destination_folder_copy}`);
         } catch (error) {
             ipcRenderer.send('log', error.message);
         }
