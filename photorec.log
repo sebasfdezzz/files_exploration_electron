@@ -4856,3 +4856,285 @@ Total: 0 files found
 
 1953521664 sectors contain unknown data, 7 invalid files found and rejected.
 PhotoRec exited normally.
+Using locale 'LC_CTYPE=en_US.UTF-8;LC_NUMERIC=es_MX.UTF-8;LC_TIME=es_MX.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=es_MX.UTF-8;LC_MESSAGES=en_US.UTF-8;LC_PAPER=es_MX.UTF-8;LC_NAME=en_US.UTF-8;LC_ADDRESS=en_US.UTF-8;LC_TELEPHONE=en_US.UTF-8;LC_MEASUREMENT=es_MX.UTF-8;LC_IDENTIFICATION=en_US.UTF-8'.
+
+
+Sun May 19 19:47:28 2024
+Command line: PhotoRec /log /d /home/sebastianf//home/sebastianf/Downloads/recovered_files /cmd /dev/sda1 fileopt,everything,disable,jpg,enable,png,enable,gif,enable,bmp,enable,search
+
+PhotoRec 7.1, Data Recovery Utility, July 2019
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Linux, kernel 6.8.9-100.fc38.x86_64 (#1 SMP PREEMPT_DYNAMIC Thu May  2 18:50:49 UTC 2024) x86_64
+Compiler: GCC 13.0
+ext2fs lib: 1.46.5, ntfs lib: libntfs-3g, ewf lib: 20140608, libjpeg: libjpeg-turbo-2.1.4, curses lib: ncurses 6.4
+Hard disk list
+Disk /dev/sda1 - 1000 GB / 931 GiB - CHS 121601 255 63 (RO), sector size=512 - WDC WD10SPZX-22Z10T1, S/N:WD-WX51AA9PNU65, FW:04.01A04
+
+Partition table type (auto): None
+Disk /dev/sda1 - 1000 GB / 931 GiB (RO) - WDC WD10SPZX-22Z10T1
+Partition table type: None
+     Unknown                  0   0  1 121601  25 24 1953521664 [Whole disk]
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+
+Interface File Select
+7 first-level signatures enabled
+
+Analyse
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+Pass 0 (blocksize=512) STATUS_FIND_OFFSET
+blocksize=4096, offset=0
+Elapsed time 0h00m00s
+Pass 1 (blocksize=4096) STATUS_EXT2_OFF
+Cannot create file /home/sebastianf//home/sebastianf/Downloads/recovered_files.1/f0026624.jpg: No such file or directory
+PhotoRec has been stopped
+Elapsed time 0h00m00s
+Pass 1 +0 file
+jpg: 0/10 recovered
+Total: 0 files found
+
+1953521664 sectors contain unknown data, 10 invalid files found and rejected.
+PhotoRec exited normally.
+Using locale 'LC_CTYPE=en_US.UTF-8;LC_NUMERIC=es_MX.UTF-8;LC_TIME=es_MX.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=es_MX.UTF-8;LC_MESSAGES=en_US.UTF-8;LC_PAPER=es_MX.UTF-8;LC_NAME=en_US.UTF-8;LC_ADDRESS=en_US.UTF-8;LC_TELEPHONE=en_US.UTF-8;LC_MEASUREMENT=es_MX.UTF-8;LC_IDENTIFICATION=en_US.UTF-8'.
+
+
+Sun May 19 19:48:08 2024
+Command line: PhotoRec /log /d /home/sebastianf//home/sebastianf/Downloads/recovered_files /cmd /dev/sda1 fileopt,everything,disable,jpg,enable,png,enable,gif,enable,bmp,enable,search
+
+PhotoRec 7.1, Data Recovery Utility, July 2019
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Linux, kernel 6.8.9-100.fc38.x86_64 (#1 SMP PREEMPT_DYNAMIC Thu May  2 18:50:49 UTC 2024) x86_64
+Compiler: GCC 13.0
+ext2fs lib: 1.46.5, ntfs lib: libntfs-3g, ewf lib: 20140608, libjpeg: libjpeg-turbo-2.1.4, curses lib: ncurses 6.4
+Hard disk list
+Disk /dev/sda1 - 1000 GB / 931 GiB - CHS 121601 255 63 (RO), sector size=512 - WDC WD10SPZX-22Z10T1, S/N:WD-WX51AA9PNU65, FW:04.01A04
+
+Partition table type (auto): None
+Disk /dev/sda1 - 1000 GB / 931 GiB (RO) - WDC WD10SPZX-22Z10T1
+Partition table type: None
+     Unknown                  0   0  1 121601  25 24 1953521664 [Whole disk]
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+
+Interface File Select
+7 first-level signatures enabled
+
+Analyse
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+Pass 0 (blocksize=512) STATUS_FIND_OFFSET
+blocksize=4096, offset=0
+Elapsed time 0h00m00s
+Pass 1 (blocksize=4096) STATUS_EXT2_OFF
+Cannot create file /home/sebastianf//home/sebastianf/Downloads/recovered_files.1/f0026624.jpg: No such file or directory
+PhotoRec has been stopped
+Elapsed time 0h00m00s
+Pass 1 +0 file
+jpg: 0/10 recovered
+Total: 0 files found
+
+1953521664 sectors contain unknown data, 10 invalid files found and rejected.
+PhotoRec exited normally.
+Using locale 'LC_CTYPE=en_US.UTF-8;LC_NUMERIC=es_MX.UTF-8;LC_TIME=es_MX.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=es_MX.UTF-8;LC_MESSAGES=en_US.UTF-8;LC_PAPER=es_MX.UTF-8;LC_NAME=en_US.UTF-8;LC_ADDRESS=en_US.UTF-8;LC_TELEPHONE=en_US.UTF-8;LC_MEASUREMENT=es_MX.UTF-8;LC_IDENTIFICATION=en_US.UTF-8'.
+
+
+Sun May 19 19:48:45 2024
+Command line: PhotoRec /log /d /home/sebastianf//home/sebastianf/Downloads/recovered_files /cmd /dev/sda1 fileopt,everything,disable,mkv,enable,mov,enable,flv,enable,mpg,enable,search
+
+PhotoRec 7.1, Data Recovery Utility, July 2019
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Linux, kernel 6.8.9-100.fc38.x86_64 (#1 SMP PREEMPT_DYNAMIC Thu May  2 18:50:49 UTC 2024) x86_64
+Compiler: GCC 13.0
+ext2fs lib: 1.46.5, ntfs lib: libntfs-3g, ewf lib: 20140608, libjpeg: libjpeg-turbo-2.1.4, curses lib: ncurses 6.4
+Hard disk list
+Disk /dev/sda1 - 1000 GB / 931 GiB - CHS 121601 255 63 (RO), sector size=512 - WDC WD10SPZX-22Z10T1, S/N:WD-WX51AA9PNU65, FW:04.01A04
+
+Partition table type (auto): None
+Disk /dev/sda1 - 1000 GB / 931 GiB (RO) - WDC WD10SPZX-22Z10T1
+Partition table type: None
+     Unknown                  0   0  1 121601  25 24 1953521664 [Whole disk]
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+
+Interface File Select
+22 first-level signatures enabled
+
+Analyse
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+Pass 0 (blocksize=512) STATUS_FIND_OFFSET
+PhotoRec has been stopped
+blocksize=32768, offset=0
+Elapsed time 0h00m01s
+Pass 1 (blocksize=32768) STATUS_EXT2_OFF
+Cannot create file /home/sebastianf//home/sebastianf/Downloads/recovered_files.1/f0031168.mp4: No such file or directory
+PhotoRec has been stopped
+Elapsed time 0h00m01s
+Pass 1 +0 file
+mov: 0/1 recovered
+Total: 0 files found
+
+1953521664 sectors contain unknown data, 1 invalid files found and rejected.
+PhotoRec exited normally.
+Using locale 'LC_CTYPE=en_US.UTF-8;LC_NUMERIC=es_MX.UTF-8;LC_TIME=es_MX.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=es_MX.UTF-8;LC_MESSAGES=en_US.UTF-8;LC_PAPER=es_MX.UTF-8;LC_NAME=en_US.UTF-8;LC_ADDRESS=en_US.UTF-8;LC_TELEPHONE=en_US.UTF-8;LC_MEASUREMENT=es_MX.UTF-8;LC_IDENTIFICATION=en_US.UTF-8'.
+
+
+Sun May 19 19:50:15 2024
+Command line: PhotoRec /log /d /home/sebastianf/home/sebastianf/Downloads/recovered_files /cmd /dev/sda1 fileopt,everything,disable,jpg,enable,png,enable,gif,enable,bmp,enable,search
+
+PhotoRec 7.1, Data Recovery Utility, July 2019
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Linux, kernel 6.8.9-100.fc38.x86_64 (#1 SMP PREEMPT_DYNAMIC Thu May  2 18:50:49 UTC 2024) x86_64
+Compiler: GCC 13.0
+ext2fs lib: 1.46.5, ntfs lib: libntfs-3g, ewf lib: 20140608, libjpeg: libjpeg-turbo-2.1.4, curses lib: ncurses 6.4
+Hard disk list
+Disk /dev/sda1 - 1000 GB / 931 GiB - CHS 121601 255 63 (RO), sector size=512 - WDC WD10SPZX-22Z10T1, S/N:WD-WX51AA9PNU65, FW:04.01A04
+
+Partition table type (auto): None
+Disk /dev/sda1 - 1000 GB / 931 GiB (RO) - WDC WD10SPZX-22Z10T1
+Partition table type: None
+     Unknown                  0   0  1 121601  25 24 1953521664 [Whole disk]
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+
+Interface File Select
+7 first-level signatures enabled
+
+Analyse
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+Pass 0 (blocksize=512) STATUS_FIND_OFFSET
+blocksize=4096, offset=0
+Elapsed time 0h00m00s
+Pass 1 (blocksize=4096) STATUS_EXT2_OFF
+Cannot create file /home/sebastianf/home/sebastianf/Downloads/recovered_files.1/f0026624.jpg: No such file or directory
+PhotoRec has been stopped
+Elapsed time 0h00m00s
+Pass 1 +0 file
+jpg: 0/10 recovered
+Total: 0 files found
+
+1953521664 sectors contain unknown data, 10 invalid files found and rejected.
+PhotoRec exited normally.
+Using locale 'LC_CTYPE=en_US.UTF-8;LC_NUMERIC=es_MX.UTF-8;LC_TIME=es_MX.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=es_MX.UTF-8;LC_MESSAGES=en_US.UTF-8;LC_PAPER=es_MX.UTF-8;LC_NAME=en_US.UTF-8;LC_ADDRESS=en_US.UTF-8;LC_TELEPHONE=en_US.UTF-8;LC_MEASUREMENT=es_MX.UTF-8;LC_IDENTIFICATION=en_US.UTF-8'.
+
+
+Sun May 19 19:52:01 2024
+Command line: PhotoRec /log /d /home/sebastianf/Downloads/recovered_files /cmd /dev/sda1 fileopt,everything,disable,jpg,enable,png,enable,gif,enable,bmp,enable,search
+
+PhotoRec 7.1, Data Recovery Utility, July 2019
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Linux, kernel 6.8.9-100.fc38.x86_64 (#1 SMP PREEMPT_DYNAMIC Thu May  2 18:50:49 UTC 2024) x86_64
+Compiler: GCC 13.0
+ext2fs lib: 1.46.5, ntfs lib: libntfs-3g, ewf lib: 20140608, libjpeg: libjpeg-turbo-2.1.4, curses lib: ncurses 6.4
+Hard disk list
+Disk /dev/sda1 - 1000 GB / 931 GiB - CHS 121601 255 63 (RO), sector size=512 - WDC WD10SPZX-22Z10T1, S/N:WD-WX51AA9PNU65, FW:04.01A04
+
+Partition table type (auto): None
+Disk /dev/sda1 - 1000 GB / 931 GiB (RO) - WDC WD10SPZX-22Z10T1
+Partition table type: None
+     Unknown                  0   0  1 121601  25 24 1953521664 [Whole disk]
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+
+Interface File Select
+7 first-level signatures enabled
+
+Analyse
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+Pass 0 (blocksize=512) STATUS_FIND_OFFSET
+blocksize=4096, offset=0
+Elapsed time 0h00m00s
+Pass 1 (blocksize=4096) STATUS_EXT2_OFF
+/home/sebastianf/Downloads/recovered_files.1/f0026624.jpg	 26624-26895
+/home/sebastianf/Downloads/recovered_files.1/f0026896.jpg	 26896-27191
+/home/sebastianf/Downloads/recovered_files.1/f0027192.jpg	 27192-27487
+/home/sebastianf/Downloads/recovered_files.1/f0027488.jpg	 27488-27663
+/home/sebastianf/Downloads/recovered_files.1/f0027664.jpg	 27664-27911
+/home/sebastianf/Downloads/recovered_files.1/f0027912.jpg	 27912-29439
+/home/sebastianf/Downloads/recovered_files.1/f0030968.jpg	 30968-31167
+/home/sebastianf/Downloads/recovered_files.1/f0041912.jpg	 41912-42255
+/home/sebastianf/Downloads/recovered_files.1/f0042256.jpg	 42256-42535
+/home/sebastianf/Downloads/recovered_files.1/f0042536.jpg	 42536-42679
+/home/sebastianf/Downloads/recovered_files.1/f0042680.jpg	 42680-42895
+/home/sebastianf/Downloads/recovered_files.1/f0042896.jpg	 42896-42967
+/home/sebastianf/Downloads/recovered_files.1/f0042968.jpg	 42968-43007
+PhotoRec has been stopped
+Using locale 'LC_CTYPE=en_US.UTF-8;LC_NUMERIC=es_MX.UTF-8;LC_TIME=es_MX.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=es_MX.UTF-8;LC_MESSAGES=en_US.UTF-8;LC_PAPER=es_MX.UTF-8;LC_NAME=en_US.UTF-8;LC_ADDRESS=en_US.UTF-8;LC_TELEPHONE=en_US.UTF-8;LC_MEASUREMENT=es_MX.UTF-8;LC_IDENTIFICATION=en_US.UTF-8'.
+
+
+Sun May 19 19:53:22 2024
+Command line: PhotoRec /log /d /home/sebastianf/Downloads/recovered_files/recovered_files /cmd /dev/sda1 fileopt,everything,disable,jpg,enable,png,enable,gif,enable,bmp,enable,search
+
+PhotoRec 7.1, Data Recovery Utility, July 2019
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Linux, kernel 6.8.9-100.fc38.x86_64 (#1 SMP PREEMPT_DYNAMIC Thu May  2 18:50:49 UTC 2024) x86_64
+Compiler: GCC 13.0
+ext2fs lib: 1.46.5, ntfs lib: libntfs-3g, ewf lib: 20140608, libjpeg: libjpeg-turbo-2.1.4, curses lib: ncurses 6.4
+Hard disk list
+Disk /dev/sda1 - 1000 GB / 931 GiB - CHS 121601 255 63 (RO), sector size=512 - WDC WD10SPZX-22Z10T1, S/N:WD-WX51AA9PNU65, FW:04.01A04
+
+Partition table type (auto): None
+Disk /dev/sda1 - 1000 GB / 931 GiB (RO) - WDC WD10SPZX-22Z10T1
+Partition table type: None
+     Unknown                  0   0  1 121601  25 24 1953521664 [Whole disk]
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+
+Interface File Select
+7 first-level signatures enabled
+
+Analyse
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+Pass 0 (blocksize=512) STATUS_FIND_OFFSET
+blocksize=4096, offset=0
+Elapsed time 0h00m00s
+Pass 1 (blocksize=4096) STATUS_EXT2_OFF
+/home/sebastianf/Downloads/recovered_files/recovered_files.1/f0026624.jpg	 26624-26895
+/home/sebastianf/Downloads/recovered_files/recovered_files.1/f0026896.jpg	 26896-27191
+/home/sebastianf/Downloads/recovered_files/recovered_files.1/f0027192.jpg	 27192-27487
+/home/sebastianf/Downloads/recovered_files/recovered_files.1/f0027488.jpg	 27488-27663
+/home/sebastianf/Downloads/recovered_files/recovered_files.1/f0027664.jpg	 27664-27911
+/home/sebastianf/Downloads/recovered_files/recovered_files.1/f0027912.jpg	 27912-29439
+PhotoRec has been stopped
+Using locale 'LC_CTYPE=en_US.UTF-8;LC_NUMERIC=es_MX.UTF-8;LC_TIME=es_MX.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=es_MX.UTF-8;LC_MESSAGES=en_US.UTF-8;LC_PAPER=es_MX.UTF-8;LC_NAME=en_US.UTF-8;LC_ADDRESS=en_US.UTF-8;LC_TELEPHONE=en_US.UTF-8;LC_MEASUREMENT=es_MX.UTF-8;LC_IDENTIFICATION=en_US.UTF-8'.
+
+
+Sun May 19 19:56:14 2024
+Command line: PhotoRec /log /d /home/sebastianf/Downloads/recovered_files/recovered_files /cmd /dev/sda1 fileopt,everything,disable,jpg,enable,png,enable,gif,enable,bmp,enable,search
+
+PhotoRec 7.1, Data Recovery Utility, July 2019
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Linux, kernel 6.8.9-100.fc38.x86_64 (#1 SMP PREEMPT_DYNAMIC Thu May  2 18:50:49 UTC 2024) x86_64
+Compiler: GCC 13.0
+ext2fs lib: 1.46.5, ntfs lib: libntfs-3g, ewf lib: 20140608, libjpeg: libjpeg-turbo-2.1.4, curses lib: ncurses 6.4
+Hard disk list
+Disk /dev/sda1 - 1000 GB / 931 GiB - CHS 121601 255 63 (RO), sector size=512 - WDC WD10SPZX-22Z10T1, S/N:WD-WX51AA9PNU65, FW:04.01A04
+
+Partition table type (auto): None
+Disk /dev/sda1 - 1000 GB / 931 GiB (RO) - WDC WD10SPZX-22Z10T1
+Partition table type: None
+     Unknown                  0   0  1 121601  25 24 1953521664 [Whole disk]
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+
+Interface File Select
+7 first-level signatures enabled
+
+Analyse
+   P btrfs                    0   0  1 121601  25 24 1953521664 [HardDrive]
+     btrfs blocksize=4096, 1000 GB / 931 GiB
+Pass 0 (blocksize=512) STATUS_FIND_OFFSET
+PhotoRec has been stopped
+blocksize=4096, offset=0
+Elapsed time 0h00m01s

@@ -48,8 +48,10 @@ async function recoverFiles() {
     // }
     const fileTypesStr = fileTypes.length > 0 ? 'everything,disable,'+fileTypes.map(type => `${type},enable`).join(',') : 'everything,enable';
 
+    const dest_folder_final =path.join(destination_folder_recover, 'recovered_files');
+
     const diskCommand = `/dev/${disk}`;
-    const sudoCommand = `photorec /log /d /home/sebastianf/${destination_folder_recover} /cmd ${diskCommand} fileopt,${fileTypesStr},search`;
+    const sudoCommand = `photorec /log /d ${dest_folder_final} /cmd ${diskCommand} fileopt,${fileTypesStr},search`;
     const fullCommand = `${mkdir_command} | echo ${password} | sudo -S ${sudoCommand}`;
 
     ipcRenderer.send('log', fullCommand);
@@ -67,7 +69,7 @@ async function recoverFiles() {
         ipcRenderer.send('log', 'finished');
     });
 
-    alert(`Files recovered onto ${destination_folder_recover}`);
+    
 }
 
 async function executeCommand2(command) {
@@ -101,6 +103,7 @@ function cancelRecovery() {
                 ipcRenderer.send('log', 'recovery process canceled');
             }
         });
+        alert(`Files recovered onto ${destination_folder_recover}`);
     }
 }
 
