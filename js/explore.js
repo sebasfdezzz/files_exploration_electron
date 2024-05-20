@@ -1,5 +1,6 @@
 const { ipcRenderer } = require('electron');
 const { execute_ls, createFileWithContent } = require('../utils/commands.js');
+const { destiantion_folder_copy } = require('../utils/global_values.js');
 const path = require('path');
 const fs = require('fs').promises;
 
@@ -145,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     //ipcRenderer.send('log', '10');
     fileOptionsButton.addEventListener('click', async () => {
         ipcRenderer.send('log', 'file download clicked');
-        const destinationDir = path.join(require('os').homedir(), 'Downloads', 'copied_files');
+        const destinationDir = destiantion_folder_copy;
         try {
             
             await fs.mkdir(destinationDir, { recursive: true });

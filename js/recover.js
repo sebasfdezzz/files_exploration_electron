@@ -5,8 +5,8 @@ const { spawn } = require('child_process');
 const path = require('path');
 const os = require('os');
 const fs = require('fs');
+const { destination_folder_recover, password } = require('../utils/global_values.js');
 
-const destination = 'Downloads/recovered_files/recovered_files';
 let childProcess;
 
 // Function to load disks using lsblk
@@ -27,48 +27,12 @@ async function loadDisks() {
     });
 }
 
-// Function to run a sudo command securely with password input
-function runSudoCommand(command, password, callback) {
-    const commandParts = command.split(' ');
-    const sudoCommand = commandParts.shift();
-    const sudoArgs = commandParts;
-
-    const process = spawn(sudoCommand, sudoArgs, {
-        stdio: 'pipe'
-    });
-
-    process.stdin.write(password + '\n');
-    process.stdin.end();
-
-    let stdout = '';
-    let stderr = '';
-
-    process.stdout.on('data', (data) => {
-        stdout += data.toString();
-    });
-
-    process.stderr.on('data', (data) => {
-        stderr += data.toString();
-    });
-
-    process.on('exit', (code) => {
-        if (code !== 0) {
-            const error = new Error(`Failed to execute command: ${command}. Exit code: ${code}`);
-            error.stdout = stdout;
-            error.stderr = stderr;
-            callback(error);
-            return;
-        }
-        callback(null, stdout, stderr);
-    });
-}
-
 // Function to handle file recovery
 async function recoverFiles() {
     const disk = document.getElementById('disk-select').value;
     const fileTypes = [];
 
-    let mkdir_command = 'mkdir -p /home/sebastianf/Downloads/recovered_files/';
+    let mkdir_command = `mkdir -p ${destination_folder_recover}`;
 
     if (document.getElementById('documents-toggle').classList.contains('selected')) {
         fileTypes.push('doc', 'pdf', 'txt');
@@ -85,8 +49,8 @@ async function recoverFiles() {
     const fileTypesStr = fileTypes.length > 0 ? 'everything,disable,'+fileTypes.map(type => `${type},enable`).join(',') : 'everything,enable';
 
     const diskCommand = `/dev/${disk}`;
-    const sudoCommand = `photorec /log /d /home/sebastianf/${destination} /cmd ${diskCommand} fileopt,${fileTypesStr},search`;
-    const fullCommand = `${mkdir_command} | echo S1f2L3123sfl | sudo -S ${sudoCommand}`;
+    const sudoCommand = `photorec /log /d /home/sebastianf/${destination_folder_recover} /cmd ${diskCommand} fileopt,${fileTypesStr},search`;
+    const fullCommand = `${mkdir_command} | echo ${password} | sudo -S ${sudoCommand}`;
 
     ipcRenderer.send('log', fullCommand);
 
@@ -154,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    document.getElementById('destination-folder').value = destination; 
+    document.getElementById('destination-folder').value = destination_folder_recover; 
 
     document.getElementById('recover-button').addEventListener('click', recoverFiles);
 
