@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const selectModeButton = document.getElementById('select-mode');
     const fileOptionsButton = document.getElementById('file-options');
     //ipcRenderer.send('log', '1');
-    let currentDirectory = '/';
+    let currentDirectory = '/home/sebastianf/Downloads';
     let directoryHistory = [];
     let selectionMode = false;
     let selectedItems = [];
@@ -136,21 +136,51 @@ document.addEventListener('DOMContentLoaded', async function() {
     addFileButton.addEventListener('click', async () => {
         ipcRenderer.send('log', 'add file clicked');
         try {
-            //openEditPopup();
-            const newFilePath = path.join(currentDirectory, 'test.txt');
-            await createFileWithContent(newFilePath, 'this is a test');
-            loadDirectory(currentDirectory); // Refresh the directory view
+            openEditPopup();
+            //const newFilePath = path.join(currentDirectory, 'test.txt');
+            //await createFileWithContent(newFilePath, 'this is a test');
+            //loadDirectory(currentDirectory); // Refresh the directory view
         } catch (error) {
             ipcRenderer.send('log', error.message);
         }
     });
 
     const openEditPopup = () => {
-        const popupWindow = window.open(`../template/editor.html?directory=${encodeURIComponent(currentDirectory)}`, 'File Editor', 'width=800,height=600');
-        if (!popupWindow) {
+        ipcRenderer.send('log', 'opening pop up');
+        const editPopUp = window.open(`../template/editor.html?directory=${encodeURIComponent(currentDirectory)}`, 'File Editor', 'width=800,height=600');
+        if (!editPopUp) {
             alert('Popup blocked! Please allow popups for this site.');
             return;
         }
+
+        editPopUp.addEventListener('load', async () => {
+            editPopUp.document.getElementById('save-button').addEventListener('click', async () => {
+                ipcRenderer.send('log', 'entered save directives');
+                const filename = editPopUp.document.getElementById('filename').value;
+                const content = editPopUp.document.getElementById('file-content').value;
+        
+                if (!filename) {
+                    alert('Please enter a filename.');
+                    return;
+                }
+        
+                let abs_path = path.join(currentDirectory, filename);
+                ipcRenderer.send('log', abs_path);
+                ipcRenderer.send('log', content);
+
+                // Send the filename and content back to the main process
+                await createFileWithContent(abs_path, content);
+                ipcRenderer.send('log', 'sent to save');
+                loadDirectory(currentDirectory); 
+                editPopUp.window.close();
+            });
+        
+            editPopUp.document.getElementById('back-button').addEventListener('click', () => {
+                editPopUp.window.close();
+            });
+        });
+
+
     };
 
     //ipcRenderer.send('log', '10');

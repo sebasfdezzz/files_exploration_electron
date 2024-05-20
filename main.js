@@ -47,7 +47,3 @@ ipcMain.on('navigate', (event, page) => {
 ipcMain.on('log', (event, message) => {
   console.log(message);
 });
-
-ipcMain.on('save-file', async (event, { filename, content }) => {
-    await createFileWithContent(filename,content);
-});

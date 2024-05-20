@@ -9,7 +9,6 @@ const { destination_folder_recover, password } = require('../utils/global_values
 
 let childProcess;
 
-// Function to load disks using lsblk
 async function loadDisks() {
     exec('lsblk -o KNAME,FSTYPE -J', (error, stdout) => {
         if (error) {
@@ -27,7 +26,6 @@ async function loadDisks() {
     });
 }
 
-// Function to handle file recovery
 async function recoverFiles() {
     const disk = document.getElementById('disk-select').value;
     const fileTypes = [];
@@ -43,9 +41,7 @@ async function recoverFiles() {
     if (document.getElementById('images-toggle').classList.contains('selected')) {
         fileTypes.push('jpg', 'png', 'gif', 'bmp');
     }
-    // if (document.getElementById('all-toggle').classList.contains('selected')) {
-    //     fileTypes = []
-    // }
+    
     const fileTypesStr = fileTypes.length > 0 ? 'everything,disable,'+fileTypes.map(type => `${type},enable`).join(',') : 'everything,enable';
 
     const dest_folder_final =path.join(destination_folder_recover, 'recovered_files');
@@ -70,26 +66,6 @@ async function recoverFiles() {
     });
 
     
-}
-
-async function executeCommand2(command) {
-    return new Promise((resolve, reject) => {
-        const child = exec(command, (error, stdout, stderr) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(stdout);
-            }
-        });
-
-        child.stdout.on('data', (data) => {
-            console.log(data);
-        });
-
-        child.stderr.on('data', (data) => {
-            console.error(data);
-        });
-    });
 }
 
 function cancelRecovery() {
@@ -127,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('recover-button').addEventListener('click', recoverFiles);
 
-    // Back button event listener
     document.getElementById('back-button').addEventListener('click', () => {
         cancelRecovery();
         ipcRenderer.send('navigate', 'index.html');

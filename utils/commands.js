@@ -2,6 +2,7 @@ const { exec } = require('child_process');
 const os = require('os');
 const path = require('path');
 const fs = require('fs').promises;
+const { ipcRenderer } = require('electron');
 
 function executeCommand(command) {
   return new Promise((resolve, reject) => {
