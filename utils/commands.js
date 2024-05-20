@@ -159,7 +159,7 @@ async function getFileInfo(filePath) {
         const filePath = path.join(directory, file);
         return getFileInfo(filePath);
       }));
-      ipcRenderer.send('log', fileInfos);
+      //ipcRenderer.send('log', fileInfos);
       
       // Filter out any files that returned undefined (indicating an error)
       const filteredFileInfos = fileInfos.filter(fileInfo => fileInfo !== undefined);

@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const selectModeButton = document.getElementById('select-mode');
     const fileOptionsButton = document.getElementById('file-options');
     //ipcRenderer.send('log', '1');
-    let currentDirectory = '/';
+    let currentDirectory = '/home/sebastianf/Downloads';
     let directoryHistory = [];
     let selectionMode = false;
     let selectedItems = [];
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             //ipcRenderer.send('log', '15');
             renderBreadcrumb(currentDirectory);
             //ipcRenderer.send('log', '16');
-            ipcRenderer.send('log', directory);
+            //ipcRenderer.send('log', directory);
             const files = await execute_ls(directory);
             
             //ipcRenderer.send('log', files);
@@ -136,13 +136,23 @@ document.addEventListener('DOMContentLoaded', async function() {
     addFileButton.addEventListener('click', async () => {
         ipcRenderer.send('log', 'add file clicked');
         try {
-            const newFilePath = path.join(currentDirectory, 'test.txt');
-            await createFileWithContent(newFilePath, 'this is a test');
-            loadDirectory(currentDirectory); // Refresh the directory view
+            openEditPopup();
+            // const newFilePath = path.join(currentDirectory, 'test.txt');
+            // await createFileWithContent(newFilePath, 'this is a test');
+            //loadDirectory(currentDirectory); // Refresh the directory view
         } catch (error) {
             ipcRenderer.send('log', error.message);
         }
     });
+
+    const openEditPopup = () => {
+        const popupWindow = window.open(`../template/editor.html?directory=${encodeURIComponent(currentDirectory)}`, 'File Editor', 'width=800,height=600');
+        if (!popupWindow) {
+            alert('Popup blocked! Please allow popups for this site.');
+            return;
+        }
+    };
+
     //ipcRenderer.send('log', '10');
     fileOptionsButton.addEventListener('click', async () => {
         ipcRenderer.send('log', 'file download clicked');

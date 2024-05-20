@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const {createFileWithContent} = require('./utils/commands.js')
 
 let mainWindow;
 
@@ -45,4 +46,8 @@ ipcMain.on('navigate', (event, page) => {
 
 ipcMain.on('log', (event, message) => {
   console.log(message);
+});
+
+ipcMain.on('save-file', async (event, { filename, content }) => {
+    await createFileWithContent(filename,content);
 });

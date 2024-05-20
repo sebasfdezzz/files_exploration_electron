@@ -27,3 +27,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+module.exports = {ipcRenderer};
+
