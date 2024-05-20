@@ -8,11 +8,14 @@ function executeCommand(command) {
     exec(command, (error, stdout, stderr) => {
       if (error) {
         reject(error);
+        ipcRenderer.send('log', error);
         console.log(error);
         return;
       }
       if (stderr) {
         reject(stderr);
+        ipcRenderer.send('log', stderr);
+
         console.log(stderr);
         return;
       }

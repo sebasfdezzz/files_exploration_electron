@@ -6,7 +6,8 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
-const destination = 'Downloads/recovered_files/recovered_files'
+const destination = 'Downloads/recovered_files/recovered_files';
+let childProcess;
 
 // Function to load disks using lsblk
 async function loadDisks() {
@@ -68,13 +69,13 @@ async function recoverFiles() {
     const fileTypes = [];
 
     if (document.getElementById('documents-toggle').classList.contains('selected')) {
-        fileTypes.push('doc', 'docx', 'pdf', 'txt', 'xls', 'xlsx', 'ppt', 'pptx');
+        fileTypes.push('doc', 'pdf', 'txt');
     }
     if (document.getElementById('videos-toggle').classList.contains('selected')) {
-        fileTypes.push('mp4', 'avi', 'mkv', 'mov', 'wmv', 'flv', 'mpeg', 'mpg');
+        fileTypes.push('mkv', 'mov','flv', 'mpg');
     }
     if (document.getElementById('images-toggle').classList.contains('selected')) {
-        fileTypes.push('jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'svg');
+        fileTypes.push('jpg', 'png', 'gif', 'bmp');
     }
     // if (document.getElementById('all-toggle').classList.contains('selected')) {
     //     fileTypes = []
@@ -87,7 +88,38 @@ async function recoverFiles() {
 
     ipcRenderer.send('log', fullCommand);
 
-    await executeCommand(fullCommand);
+    childProcess = await executeCommand2(fullCommand);
+    ipcRenderer.send('log', 'finished');
+}
+
+async function executeCommand2(command) {
+    // Implement your command execution logic here
+    return new Promise((resolve, reject) => {
+        const child = exec(command, (error, stdout, stderr) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(stdout);
+            }
+        });
+
+        // Handle child process events, if necessary
+        // For example, log stdout and stderr
+        child.stdout.on('data', (data) => {
+            console.log(data);
+        });
+
+        child.stderr.on('data', (data) => {
+            console.error(data);
+        });
+    });
+}
+
+function cancelRecovery() {
+    if (childProcess) {
+        childProcess.kill();
+        ipcRenderer.send('log', 'recovery process canceled');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -112,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Back button event listener
     document.getElementById('back-button').addEventListener('click', () => {
+        cancelRecovery();
         ipcRenderer.send('navigate', 'index.html');
     });
 });
