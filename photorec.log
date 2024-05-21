@@ -5138,3 +5138,7 @@ Pass 0 (blocksize=512) STATUS_FIND_OFFSET
 PhotoRec has been stopped
 blocksize=4096, offset=0
 Elapsed time 0h00m01s
+SIGHUP detected! PhotoRec has been killed.
+SIGHUP detected! PhotoRec has been killed.
+SIGHUP detected! PhotoRec has been killed.
+SIGHUP detected! PhotoRec has been killed.

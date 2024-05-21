@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const selectModeButton = document.getElementById('select-mode');
     const fileOptionsButton = document.getElementById('file-options');
     //ipcRenderer.send('log', '1');
-    let currentDirectory = '/home/sebastianf/Downloads';
+    let currentDirectory = '/';
     let directoryHistory = [];
     let selectionMode = false;
     let selectedItems = [];
