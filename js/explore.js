@@ -1,7 +1,7 @@
 const { ipcRenderer } = require('electron');
 const { execute_ls, createFileWithContent } = require('../utils/commands.js');
 const { destination_folder_copy } = require('../utils/global_values.js');
-const path = require('path');
+const { getChosenDir } = require('./disks.js');
 const fs = require('fs').promises;
 
 document.addEventListener('DOMContentLoaded', async function() {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const selectModeButton = document.getElementById('select-mode');
     const fileOptionsButton = document.getElementById('file-options');
     //ipcRenderer.send('log', '1');
-    let currentDirectory = '/';
+    let currentDirectory = getChosenDir();
     let directoryHistory = [];
     let selectionMode = false;
     let selectedItems = [];
