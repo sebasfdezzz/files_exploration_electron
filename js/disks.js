@@ -12,16 +12,13 @@ async function loadDisks() {
           kname: "root",
           fstype: "notnull",
           mountpoint: "/"
-      }];
+        }];
 
-      // Parse and filter the stdout, then concatenate the result
-      const diskData = JSON.parse(stdout).blockdevices.filter(device => device.fstype);
-      const disks = fdisks.concat(diskData);
+        // Parse and filter the stdout, then concatenate the result
+        const diskData = JSON.parse(stdout).blockdevices.filter(device => device.fstype);
+        const disks = fdisks.concat(diskData);
 
-      const diskSelect = document.getElementById('disk-list');
-
-        
-        
+        const diskSelect = document.getElementById('disk-list');
 
         disks.forEach(disk => {
             const btn = document.createElement('button');

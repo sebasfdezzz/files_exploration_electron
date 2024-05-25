@@ -5,12 +5,12 @@ const { destination_folder_copy } = require('../utils/global_values.js');
 const fs = require('fs').promises;
 
 document.addEventListener('DOMContentLoaded', async function() {
-    let dir = "/home/sebastianf/Documents/";
+    let dir = "/";
     ipcRenderer.on('navigateArgs', (event, args) => {
         ipcRenderer.send('log', 'recived: ' +args);
         dir = args;
 
-        const fileListDiv = document.getElementById('file-list');
+    const fileListDiv = document.getElementById('file-list');
     const breadcrumbDiv = document.getElementById('breadcrumb');
     const backToIndexButton = document.getElementById('back-to-index');
     const backToPrevButton = document.getElementById('back-to-prev');
