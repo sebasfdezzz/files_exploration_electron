@@ -3,6 +3,8 @@ const os = require('os');
 const path = require('path');
 const fs = require('fs').promises;
 const { ipcRenderer } = require('electron');
+const { password } = require('./global_values');
+
 
 function executeCommand(command) {
   return new Promise((resolve, reject) => {
@@ -32,7 +34,7 @@ async function createFileWithContent(fileName, content) {
   try {
     // Escape double quotes in content for command line
     const escapedContent = content.replace(/"/g, '\\"');
-    const command = `echo "${escapedContent}" > "${fileName}"`;
+    const command = ` echo ${password} | sudo -S echo "${escapedContent}" > "${fileName}"`;
     await executeCommand(command);
     ipcRenderer.send('log', `File ${fileName} created successfully.`);
   } catch (error) {
@@ -151,7 +153,7 @@ async function getFileInfo(filePath) {
   
   async function execute_ls(directory) {
     try {
-      const files = await executeCommand(`ls -A1 "${directory}"`);
+      const files = await executeCommand(` echo ${password} | sudo -S ls -A1 "${directory}"`);
       const fileList = files.split(' ');
       const fileInfos = await Promise.all(fileList.map(async (file) => {
         const filePath = path.join(directory, file);
