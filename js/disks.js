@@ -1,27 +1,41 @@
 const { exec } = require('child_process');
 const { password } = require('../utils/global_values.js');
-let chosen_dir = "/";
+const { ipcRenderer } = require('electron');
 
 async function loadDisks() {
-    exec('lsblk -o KNAME,FSTYPE -J', (error, stdout) => {
+    exec('lsblk -o KNAME,FSTYPE,MOUNTPOINT -J', (error, stdout) => {
         if (error) {
-            console.error(`Error: ${error.message}`);
+            ipcRenderer.send('log', error);
             return;
         }
-        const disks = JSON.parse(stdout).blockdevices.filter(device => device.fstype);
-        const diskSelect = document.getElementById('disk-list');
+        const fdisks = [{
+          kname: "root",
+          fstype: "notnull",
+          mountpoint: "/"
+      }];
+
+      // Parse and filter the stdout, then concatenate the result
+      const diskData = JSON.parse(stdout).blockdevices.filter(device => device.fstype);
+      const disks = fdisks.concat(diskData);
+
+      const diskSelect = document.getElementById('disk-list');
+
+        
+        
+
         disks.forEach(disk => {
             const btn = document.createElement('button');
             btn.className = 'button';
             btn.id = disk.kname;
-            btn.value = "/dev/"+disk.kname;
-            ipcRenderer.send('log', btn.value);
+            btn.value = disk.kname;
+            btn.mntpoint = disk.mountpoint || null;
+            //ipcRenderer.send('log', btn.value);
             btn.textContent = disk.kname;
 
             btn.addEventListener('click', async () => {
-                chosen_dir = await mountDevice(btn.value);
-                ipcRenderer.send('log', 'chosen_dir '+ chosen_dir);
-                ipcRenderer.send('navigate', 'explore.html');
+                let chosen_dir = await handleDeviceMount(btn.value, btn.mntpoint);
+                //ipcRenderer.send('log', 'chosen_dir '+ getDir());
+                ipcRenderer.send('navigateArgs', 'explore.html', chosen_dir);
             });
 
             diskSelect.appendChild(btn);
@@ -51,20 +65,33 @@ async function exec_command(command){
       });
 }
 
-async function mountDevice(disk) {
-    const mkdir_command = `mkdir -p /mnt/${disk}`;
-    const diskCommand = `mount ${disk} /mnt/${disk}`;
-    const fullCommand = `echo ${password} | ${mkdir_command} | sudo -S ${diskCommand}`;
+async function handleDeviceMount(devicePath, mountpoint) {
+  if (mountpoint) {
+      return mountpoint.endsWith('/') ? mountpoint : mountpoint + '/';
+  } else {
+      return await mountDevice(diskName);
+  }
+}
 
-    try {
-        await exec_command(fullCommand);
-        return `/mnt/${disk}`;
-      } catch (error) {
-        ipcRenderer.send('log', error.message);
-        return '/';
-      }
+async function mountDevice(diskName) {
+  const mkdir_command = `mkdir -p /mnt/${diskName}`;
+  const diskCommand = `mount /dev/${diskName} /mnt/${diskName}`;
+  const fullCommand = `echo ${password} | sudo -S ${mkdir_command} && sudo -S ${diskCommand}`;
+
+  try {
+      await exec_command(fullCommand);
+      return `/mnt/${diskName}/`;
+  } catch (error) {
+      ipcRenderer.send('log', error.message);
+      return '/';
+  }
+}
+
+function getChosenDir(){
+  // return chosen_dir;
+return "/home/";
 }
 
 document.addEventListener('DOMContentLoaded', loadDisks);
 
-module.exports = { getChosenDir: () => chosen_dir };
+module.exports = { getChosenDir};

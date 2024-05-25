@@ -1,11 +1,16 @@
 const { ipcRenderer } = require('electron');
 const { execute_ls, createFileWithContent } = require('../utils/commands.js');
 const { destination_folder_copy } = require('../utils/global_values.js');
-const { getChosenDir } = require('./disks.js');
+//const { getChosenDir } = require('./disks.js');
 const fs = require('fs').promises;
 
 document.addEventListener('DOMContentLoaded', async function() {
-    const fileListDiv = document.getElementById('file-list');
+    let dir = "/home/sebastianf/Documents/";
+    ipcRenderer.on('navigateArgs', (event, args) => {
+        ipcRenderer.send('log', 'recived: ' +args);
+        dir = args;
+
+        const fileListDiv = document.getElementById('file-list');
     const breadcrumbDiv = document.getElementById('breadcrumb');
     const backToIndexButton = document.getElementById('back-to-index');
     const backToPrevButton = document.getElementById('back-to-prev');
@@ -13,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const selectModeButton = document.getElementById('select-mode');
     const fileOptionsButton = document.getElementById('file-options');
     //ipcRenderer.send('log', '1');
-    let currentDirectory = getChosenDir();
+    let currentDirectory = dir;
     let directoryHistory = [];
     let selectionMode = false;
     let selectedItems = [];
@@ -220,4 +225,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Initial load
     loadDirectory(currentDirectory);
     //ipcRenderer.send('log', '13');
+    });
+    
 });

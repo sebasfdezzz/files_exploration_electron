@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     exploreBtn.addEventListener("click", function() {
         ipcRenderer.send('log', 'Explore button clicked');
-        ipcRenderer.send('navigate', 'explore.html');
+        ipcRenderer.send('navigate', 'disks.html');
     });
 
     recoverBtn.addEventListener("click", function() {

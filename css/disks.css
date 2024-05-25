@@ -23,8 +23,7 @@ body, html {
     height: 100%;
     width: 100%;
     align-self:center;
-    padding-left:35%;
-    
+    padding-left:35%;    
 }
 
 .list-container{
@@ -38,15 +37,15 @@ body, html {
     display: grid;
     gap: 10px;
     align-items: center;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: none;
-    height: 70%;
+    height: 200px;
     width:48%;
 }
 
 .button {
 
-    padding: 10px 40px; /* Increased padding for bigger buttons */
+    padding: 10px 40px;
     border: none;
     border-radius: 20px;
     font-size: 18px;

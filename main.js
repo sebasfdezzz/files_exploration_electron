@@ -44,6 +44,18 @@ ipcMain.on('navigate', (event, page) => {
     }
 });
 
+ipcMain.on('navigateArgs', (event, page, args) => {
+    if (mainWindow) {
+        mainWindow.loadFile(path.join(__dirname, 'template', page))
+            .then(() => {
+                mainWindow.webContents.send('navigateArgs', args);
+            })
+            .catch(err => {
+                console.error('Failed to load page:', err);
+            });
+    }
+});
+
 ipcMain.on('log', (event, message) => {
   console.log(message);
 });
