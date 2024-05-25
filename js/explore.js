@@ -1,9 +1,10 @@
 const { ipcRenderer } = require('electron');
-const { execute_ls, createFileWithContent } = require('../utils/commands.js');
-const { destination_folder_copy } = require('../utils/global_values.js');
+const { execute_ls, createFileWithContent, executeCommand } = require('../utils/commands.js');
+const { destination_folder_copy, password } = require('../utils/global_values.js');
 //const { getChosenDir } = require('./disks.js');
 const fs = require('fs').promises;
 const path = require('path');
+const os = require('os');
 
 
 
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             fileIcon.textContent = file.is_directory ? '📁' : '📄';
             
             const fileName = document.createElement('span');
-            fileName.textContent = file.file_name;
+            fileName.textContent = file.file_name.replace(/'$/, '');
             
             fileItem.appendChild(fileIcon);
             fileItem.appendChild(fileName);
@@ -92,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                         fileImage.style.display = 'none';
                         fileText.style.display = 'block';
                         try {
-                            fileText.textContent = await fs.readFile(file.absolute_path, 'utf8');
+                            fileText.textContent = await executeCommand(`echo ${password} | sudo -S cat "${file.absolute_path}"`);
                         } catch (error) {
                             ipcRenderer.send('log', error);
                             fileText.textContent = error;
@@ -172,15 +173,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     };
 
     fileOptionsButton.addEventListener('click', async () => {
+        
         const destinationDir = destination_folder_copy;
         try {
+            const username = os.userInfo().username;
             // Create the destination directory with sudo
             await executeCommand(`echo ${password} | sudo -S mkdir -p "${destinationDir}"`);
+            await executeCommand(`echo ${password} | sudo -S chown -R ${username}:${username} "${destinationDir}"`);
     
             // Copy each selected item to the destination directory with sudo
             for (const item of selectedItems) {
                 const destinationPath = path.join(destinationDir, path.basename(item.absolute_path));
                 await executeCommand(`echo ${password} | sudo -S cp "${item.absolute_path}" "${destinationPath}"`);
+                await executeCommand(`echo ${password} | sudo -S chown -R ${username}:${username} "${destinationPath}"`);
             }
     
             selectedItems = [];

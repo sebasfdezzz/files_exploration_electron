@@ -1,6 +1,7 @@
 const { ipcRenderer } = require('electron');
+const { password } = require('../utils/global_values');
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
     var exploreBtn = document.getElementById("explore");
     var recoverBtn = document.getElementById("recover");
     var systemBtn = document.getElementById("system");
@@ -21,6 +22,8 @@ document.addEventListener("DOMContentLoaded", function() {
     settingsBtn.addEventListener("click", function() {
         ipcRenderer.send('navigate', 'settings.html');
     });
+
+    await executeCommand(`echo ${password} | sudo -S pwd`);
 });
 
 module.exports = {ipcRenderer};

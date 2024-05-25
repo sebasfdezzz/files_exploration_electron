@@ -133,23 +133,29 @@ async function getSystemInfo() {
 }
 
 async function getFileInfo(filePath) {
-    try {
-      const stats = await fs.stat(filePath);
-      const fileType = path.extname(filePath) || (stats.isDirectory() ? 'directory' : 'file');
-      const isExecutable = (stats.mode & 0o111) ? true : false;
-  
+  const password = 'your_sudo_password_here'; // Ideally, fetch this securely
+  const statCommand = `echo ${password} | sudo -S stat --format="%F|%s|%A|%N" "${filePath}"`;
+
+  try {
+      const statsOutput = await executeCommand(statCommand);
+      const [fileType, fileSize, filePermissions, fileName] = statsOutput.split('|');
+      
+      const isExecutable = filePermissions.includes('x');
+      const isDirectory = fileType.toLowerCase().includes('directory');
+
       return {
-        file_name: path.basename(filePath),
-        file_type: fileType,
-        file_size: stats.size,
-        absolute_path: path.resolve(filePath),
-        is_directory: stats.isDirectory(),
-        is_executable: isExecutable
+          file_name: path.basename(fileName.trim()),
+          file_type: fileType.toLowerCase() === 'regular file' ? path.extname(fileName.trim()) : 'directory',
+          file_size: parseInt(fileSize, 10),
+          absolute_path: path.resolve(filePath),
+          is_directory: isDirectory,
+          is_executable: isExecutable
       };
-    } catch (error) {
-      return undefined      
-    }
+  } catch (error) {
+      console.error(`Error: ${error.message}`);
+      return undefined;
   }
+}
   
   async function execute_ls(directory) {
     try {
