@@ -50,8 +50,6 @@ async function recoverFiles() {
     const sudoCommand = `photorec /log /d ${dest_folder_final} /cmd ${diskCommand} fileopt,${fileTypesStr},search`;
     const fullCommand = `${mkdir_command} | echo ${password} | sudo -S ${sudoCommand}`;
 
-    ipcRenderer.send('log', fullCommand);
-
     childProcess = exec(fullCommand, (error, stdout, stderr) => {
         if (error) {
             ipcRenderer.send('log', `error: ${error.message}`);
@@ -62,7 +60,7 @@ async function recoverFiles() {
     });
 
     childProcess.on('exit', () => {
-        ipcRenderer.send('log', 'finished');
+        //ipcRenderer.send('log', 'finished');
     });
 
     

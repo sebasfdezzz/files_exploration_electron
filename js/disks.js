@@ -26,12 +26,10 @@ async function loadDisks() {
             btn.id = disk.kname;
             btn.value = disk.kname;
             btn.mntpoint = disk.mountpoint || null;
-            //ipcRenderer.send('log', btn.value);
             btn.textContent = disk.kname;
 
             btn.addEventListener('click', async () => {
                 let chosen_dir = await handleDeviceMount(btn.value, btn.mntpoint);
-                //ipcRenderer.send('log', 'chosen_dir '+ getDir());
                 ipcRenderer.send('navigateArgs', 'explore.html', chosen_dir);
             });
 

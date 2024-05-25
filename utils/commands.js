@@ -145,7 +145,6 @@ async function getFileInfo(filePath) {
         is_executable: isExecutable
       };
     } catch (error) {
-      //ipcRenderer.send('log', error.message);
       return undefined      
     }
   }
@@ -153,16 +152,12 @@ async function getFileInfo(filePath) {
   async function execute_ls(directory) {
     try {
       const files = await executeCommand(`ls -A1 "${directory}"`);
-      //ipcRenderer.send('log', files);
       const fileList = files.split(' ');
-      //ipcRenderer.send('log', fileList);
       const fileInfos = await Promise.all(fileList.map(async (file) => {
         const filePath = path.join(directory, file);
         return getFileInfo(filePath);
       }));
-      //ipcRenderer.send('log', fileInfos);
       
-      // Filter out any files that returned undefined (indicating an error)
       const filteredFileInfos = fileInfos.filter(fileInfo => fileInfo !== undefined);
 
       return filteredFileInfos;

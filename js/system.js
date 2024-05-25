@@ -4,9 +4,7 @@ const { getSystemInfo } = require('../utils/commands.js');
 document.addEventListener('DOMContentLoaded', async function() {
     let systemData = await getSystemInfo();
     
-    ipcRenderer.send('log', JSON.stringify(systemData));
     const systemInfoDiv = document.getElementById('system-info');
-    ipcRenderer.send('log', '1');
     const createSystemItem = (title, value) => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'system-item';
@@ -87,5 +85,4 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('back-button').addEventListener('click', () => {
         ipcRenderer.send('navigate', 'index.html');
     });
-    ipcRenderer.send('log', '9');
 });
