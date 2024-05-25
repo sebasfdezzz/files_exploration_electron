@@ -174,13 +174,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     fileOptionsButton.addEventListener('click', async () => {
         const destinationDir = destination_folder_copy;
         try {
-            
-            await fs.mkdir(destinationDir, { recursive: true });
-            
+            // Create the destination directory with sudo
+            await executeCommand(`echo ${password} | sudo -S mkdir -p "${destinationDir}"`);
+    
+            // Copy each selected item to the destination directory with sudo
             for (const item of selectedItems) {
                 const destinationPath = path.join(destinationDir, path.basename(item.absolute_path));
-                await fs.copyFile(item.absolute_path, destinationPath);
+                await executeCommand(`echo ${password} | sudo -S cp "${item.absolute_path}" "${destinationPath}"`);
             }
+    
             selectedItems = [];
             document.querySelectorAll('.file-item').forEach(item => item.classList.remove('selected'));
             selectionMode = false;
