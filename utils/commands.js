@@ -10,17 +10,17 @@ function executeCommand(command) {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error) {
-        reject(error);
+        //reject(error);
         ipcRenderer.send('log', error);
-        console.log(error);
-        return;
+        //console.log(error);
+        //return;
       }
       if (stderr) {
-        reject(stderr);
+        //reject(stderr);
         ipcRenderer.send('log', stderr);
 
-        console.log(stderr);
-        return;
+        //console.log(stderr);
+        //return;
       }
 
       // Remove newline characters and extra whitespace
@@ -136,23 +136,35 @@ async function getFileInfo(filePath) {
   const statCommand = `echo ${password} | sudo -S stat --format="%F|%s|%A|%N" "${filePath}"`;
 
   try {
-      const statsOutput = await executeCommand(statCommand);
-      const [fileType, fileSize, filePermissions, fileName] = statsOutput.split('|');
-      
-      const isExecutable = filePermissions.includes('x');
-      const isDirectory = fileType.toLowerCase().includes('directory');
+    const statsOutput = await executeCommand(statCommand);
+    const [fileType, fileSize, filePermissions, fileName] = statsOutput.split('|');
 
-      return {
-          file_name: path.basename(fileName.trim()),
-          file_type: fileType.toLowerCase() === 'regular file' ? path.extname(fileName.trim()) : 'directory',
-          file_size: parseInt(fileSize, 10),
-          absolute_path: path.resolve(filePath),
-          is_directory: isDirectory,
-          is_executable: isExecutable
-      };
+    const isExecutable = filePermissions.includes('x');
+    const isDirectory = fileType.toLowerCase().includes('directory');
+
+    let isSymlink = fileType.toLowerCase().includes('symbolic link');
+    let symlinkTargetIsDirectory = false;
+
+    if (isSymlink) {
+      const readlinkCommand = `echo ${password} | sudo -S readlink -f "${filePath}"`;
+      const symlinkTarget = await executeCommand(readlinkCommand);
+      const targetStatCommand = `echo ${password} | sudo -S stat --format="%F" "${symlinkTarget}"`;
+      const targetType = await executeCommand(targetStatCommand);
+
+      symlinkTargetIsDirectory = targetType.toLowerCase().includes('directory');
+    }
+
+    return {
+      file_name: path.basename(fileName.trim()),
+      file_type: isSymlink ? (symlinkTargetIsDirectory ? 'directory' : 'symbolic link') : fileType.toLowerCase() === 'regular file' ? path.extname(fileName.trim()) : 'directory',
+      file_size: parseInt(fileSize, 10),
+      absolute_path: path.resolve(filePath),
+      is_directory: isDirectory || symlinkTargetIsDirectory,
+      is_executable: isExecutable
+    };
   } catch (error) {
-      console.error(`Error: ${error.message}`);
-      return undefined;
+    console.error(`Error: ${error.message}`);
+    return undefined;
   }
 }
   

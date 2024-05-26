@@ -42,17 +42,17 @@ async function exec_command(command){
     return new Promise((resolve, reject) => {
         exec(command, (error, stdout, stderr) => {
           if (error) {
-            reject(error);
+            //reject(error);
             ipcRenderer.send('log', error);
-            console.log(error);
-            return;
+            //console.log(error);
+            //return;
           }
           if (stderr) {
-            reject(stderr);
+            //reject(stderr);
             ipcRenderer.send('log', stderr);
     
-            console.log(stderr);
-            return;
+            //console.log(stderr);
+            //return;
           }
     
           resolve(stdout);

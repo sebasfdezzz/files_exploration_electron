@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     ipcRenderer.on('navigateArgs', (event, args) => {
         ipcRenderer.send('log', 'loading path: ' +args);
         dir = args;
-
+    //dir = '/home/sebastianf/Downloads'
     const fileListDiv = document.getElementById('file-list');
     const breadcrumbDiv = document.getElementById('breadcrumb');
     const backToIndexButton = document.getElementById('back-to-index');
@@ -50,7 +50,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             
             const fileName = document.createElement('span');
             fileName.textContent = file.file_name.replace(/'$/, '');
-            
+            file.file_name =file.file_name.replace(/'$/, '');
+
             fileItem.appendChild(fileIcon);
             fileItem.appendChild(fileName);
             fileListDiv.appendChild(fileItem);
@@ -85,6 +86,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     fileText.textContent = 'This is a directory.';
                 } else {
                     const fileExtension = file.file_name.split('.').pop().toLowerCase();
+                    ipcRenderer.send('log', 'las extension es '+ fileExtension);
                     if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png' || fileExtension === 'gif') {
                         fileImage.style.display = 'block';
                         fileImage.src = file.absolute_path;
