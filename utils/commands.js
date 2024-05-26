@@ -133,7 +133,6 @@ async function getSystemInfo() {
 }
 
 async function getFileInfo(filePath) {
-  const password = 'your_sudo_password_here'; // Ideally, fetch this securely
   const statCommand = `echo ${password} | sudo -S stat --format="%F|%s|%A|%N" "${filePath}"`;
 
   try {
@@ -159,7 +158,7 @@ async function getFileInfo(filePath) {
   
   async function execute_ls(directory) {
     try {
-      const files = await executeCommand(` echo ${password} | sudo -S ls -A1 "${directory}"`);
+      const files = await executeCommand(`echo ${password} | sudo -S ls -A1 "${directory}"`);
       const fileList = files.split(' ');
       const fileInfos = await Promise.all(fileList.map(async (file) => {
         const filePath = path.join(directory, file);
