@@ -1,7 +1,6 @@
 const { ipcRenderer } = require('electron');
 const { execute_ls, createFileWithContent, executeCommand } = require('../utils/commands.js');
 const { destination_folder_copy, password } = require('../utils/global_values.js');
-//const { getChosenDir } = require('./disks.js');
 const fs = require('fs').promises;
 const path = require('path');
 const os = require('os');

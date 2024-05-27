@@ -87,11 +87,5 @@ async function mountDevice(diskName) {
   }
 }
 
-function getChosenDir(){
-  // return chosen_dir;
-return "/home/";
-}
 
 document.addEventListener('DOMContentLoaded', loadDisks);
-
-module.exports = { getChosenDir};
