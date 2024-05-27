@@ -62,19 +62,24 @@ async function exec_command(command){
 
 async function handleDeviceMount(devicePath, mountpoint) {
   if (mountpoint) {
+      ipcRenderer.send('log', 'Entered valid mountpoint: '+mountpoint);
       return mountpoint.endsWith('/') ? mountpoint : mountpoint + '/';
   } else {
+      ipcRenderer.send('log', 'Trying to mount device '+devicePath);
       return await mountDevice(devicePath);
   }
 }
 
 async function mountDevice(diskName) {
+  ipcRenderer.send('log', 'Inside method to mount device '+devicePath);
   const mkdir_command = `mkdir -p /mnt/${diskName}`;
   const diskCommand = `mount /dev/${diskName} /mnt/${diskName}`;
   const fullCommand = `echo ${password} | sudo -S ${mkdir_command} && sudo -S ${diskCommand}`;
 
   try {
+      ipcRenderer.send('log', 'Just b4 executing full command: '+fullCommand);
       await exec_command(fullCommand);
+      ipcRenderer.send('log', 'Succes mounting returning: '+ `/mnt/${diskName}/`);
       return `/mnt/${diskName}/`;
   } catch (error) {
       ipcRenderer.send('log', error.message);
