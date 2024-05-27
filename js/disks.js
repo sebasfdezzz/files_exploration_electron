@@ -42,13 +42,13 @@ async function exec_command(command){
     return new Promise((resolve, reject) => {
         exec(command, (error, stdout, stderr) => {
           if (error) {
-            //reject(error);
+            reject(error);
             ipcRenderer.send('log', error);
             //console.log(error);
             //return;
           }
           if (stderr) {
-            //reject(stderr);
+            reject(stderr);
             ipcRenderer.send('log', stderr);
     
             //console.log(stderr);
@@ -71,7 +71,7 @@ async function handleDeviceMount(devicePath, mountpoint) {
 }
 
 async function mountDevice(diskName) {
-  ipcRenderer.send('log', 'Inside method to mount device '+devicePath);
+  ipcRenderer.send('log', 'Inside method to mount device '+diskName);
   const mkdir_command = `mkdir -p /mnt/${diskName}`;
   const diskCommand = `mount /dev/${diskName} /mnt/${diskName}`;
   const fullCommand = `echo ${password} | sudo -S ${mkdir_command} && sudo -S ${diskCommand}`;
