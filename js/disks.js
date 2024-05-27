@@ -64,7 +64,7 @@ async function handleDeviceMount(devicePath, mountpoint) {
   if (mountpoint) {
       return mountpoint.endsWith('/') ? mountpoint : mountpoint + '/';
   } else {
-      return await mountDevice(diskName);
+      return await mountDevice(devicePath);
   }
 }
 
