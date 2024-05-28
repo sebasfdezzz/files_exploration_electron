@@ -12,7 +12,8 @@
     "appId": "upxtractor",
     "linux": {
       "target": [
-        "AppImage"
+        "AppImage",
+        "deb"
       ]
     }
   },
