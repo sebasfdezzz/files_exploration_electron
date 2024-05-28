@@ -1,6 +1,6 @@
 {
   "name": "upxtractor_port",
-  "version": "2.5.0",
+  "version": "2.7.0",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -12,8 +12,7 @@
     "appId": "upxtractor",
     "linux": {
       "target": [
-        "AppImage",
-        "deb"
+        "AppImage"
       ]
     }
   },

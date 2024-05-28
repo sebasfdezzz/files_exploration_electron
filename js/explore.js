@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                     fileText.textContent = 'This is a directory.';
                 } else {
                     const fileExtension = file.file_name.split('.').pop().toLowerCase();
-                    ipcRenderer.send('log', 'las extension es '+ fileExtension);
                     if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png' || fileExtension === 'gif') {
                         fileImage.style.display = 'block';
                         fileImage.src = file.absolute_path;
