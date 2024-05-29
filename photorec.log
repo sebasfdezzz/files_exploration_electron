@@ -5234,3 +5234,4 @@ Pass 1 (blocksize=4096) STATUS_EXT2_OFF
 /home/sebastianf/Downloads/recovered_files/recovered_files.1/f0042896.jpg	 42896-42967
 /home/sebastianf/Downloads/recovered_files/recovered_files.1/f0042968.jpg	 42968-43007
 PhotoRec has been stopped
+SIGHUP detected! PhotoRec has been killed.

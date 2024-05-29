@@ -34,7 +34,9 @@ async function createFileWithContent(fileName, content) {
   try {
     // Escape double quotes in content for command line
     const escapedContent = content.replace(/"/g, '\\"');
-    const command = ` echo ${password} | sudo -S echo "${escapedContent}" > "${fileName}"`;
+    //const command = ` echo ${password} | sudo -S echo "${escapedContent}" > "${fileName}"`;
+    //const command = `echo ${password} | sudo -S bash -c 'echo "${escapedContent}" | tee "${fileName}" > /dev/null`;
+    const command = `echo ${password} | sudo -S bash -c 'echo "${escapedContent}" | tee "${fileName}" > /dev/null'`;
     await executeCommand(command);
     ipcRenderer.send('log', `File ${fileName} created successfully.`);
   } catch (error) {

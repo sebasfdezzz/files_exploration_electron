@@ -73,11 +73,16 @@ async function handleDeviceMount(devicePath, mountpoint) {
 async function mountDevice(diskName) {
   const mkdir_command = `mkdir -p /mnt/${diskName}`;
   const diskCommand = `mount /dev/${diskName} /mnt/${diskName}`;
-  const fullCommand = `echo ${password} | sudo -S ${mkdir_command} && sudo -S ${diskCommand}`;
+  const fullCommand1 = `echo ${password} | sudo -S ${mkdir_command}`;
+  const fullCommand2 = `echo ${password} | sudo -S ${diskCommand}`;
 
   try {
-      await exec_command(fullCommand);
-      ipcRenderer.send('log', 'Succes mounting returning: '+ `/mnt/${diskName}/`);
+      await exec_command(fullCommand1);
+      //alert('Succes creating dir: '+ `/mnt/${diskName}/`);
+      ipcRenderer.send('log', 'Succes creating dir: '+ `/mnt/${diskName}/`);
+      await exec_command(fullCommand2);
+      //alert('Succes mounting returning: '+ `/mnt/${diskName}/`);
+      ipcRenderer.send('log','Succes mounting returning: '+ `/mnt/${diskName}/`) ;
       return `/mnt/${diskName}/`;
   } catch (error) {
       ipcRenderer.send('log', error);
